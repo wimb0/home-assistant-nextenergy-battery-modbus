@@ -21,15 +21,15 @@ jobs:
         shell: "bash"
         run: |
           yq -i -o json '.version="${{ github.event.release.tag_name }}"' \
-            "${{ github.workspace }}/custom_components/saj_modbus/manifest.json"
+            "${{ github.workspace }}/custom_components/nextenergy_battery/manifest.json"
 
       - name: "ZIP the integration directory"
         shell: "bash"
         run: |
-          cd "${{ github.workspace }}/custom_components/saj_modbus"
-          zip home-assistant-saj-r5-modbus.zip -r ./
+          cd "${{ github.workspace }}/custom_components/nextenergy_battery"
+          zip home-assistant-nextenergy-battery-modbus.zip -r ./
 
       - name: "Upload the ZIP file to the release"
         uses: softprops/action-gh-release@v2.3.4
         with:
-          files: ${{ github.workspace }}/custom_components/saj_modbus/home-assistant-saj-r5-modbus.zip
+          files: ${{ github.workspace }}/custom_components/nextenergy_battery/home-assistant-nextenergy-battery-modbus.zip
