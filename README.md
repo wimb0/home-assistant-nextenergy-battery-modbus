@@ -1,96 +1,68 @@
 # Home Assistant NextEnergy Battery Modbus Integration
 
-**This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by NextEnergy**
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
 
 This is a custom integration for Home Assistant to monitor NextEnergy batteries via Modbus TCP.
 
 ## Installation
 
-### HACS
-
-1. Add this repository as a custom repository in HACS.
-2. Search for "NextEnergy Battery" and install the integration.
-3. Restart Home Assistant.
-
-### Manual Installation
-
-1. Copy the `custom_components/nextenergy_battery` directory to your Home Assistant configuration directory.
-2. Restart Home Assistant.
+1.  **HACS:** Add this repository as a custom repository in HACS. Search for "NextEnergy Battery" and install the integration.
+2.  **Manual:** Copy the `custom_components/nextenergy_battery` directory to your Home Assistant `custom_components` directory.
+3.  Restart Home Assistant.
 
 ## Configuration
 
-1. Go to **Configuration** > **Integrations**.
-2. Click the **+** button and search for "NextEnergy Battery".
-3. Enter the host, port, and slave ID of your battery.
+1.  Go to **Settings** > **Devices & Services**.
+2.  Click **+ Add Integration**.
+3.  Search for "NextEnergy Battery" and select it.
+4.  Enter the Host IP, Port, and Modbus Slave ID of your battery.
 
 ## Sensors
 
-The integration will create the following sensors:
+The integration creates a device with a number of sensors to monitor your battery system. Many less-critical sensors are disabled by default but can be enabled from the device page.
 
-- Model Name
-- SN
-- Master Version
-- Slave Version
-- Manager Version
-- BMS Connection Status
-- BMS Master Version
-- BMS Master SN
-- BMS Slave Number
-- BMS Slave 1 Version
-- BMS Slave 1 SN
-- BMS Slave 2 Version
-- BMS Slave 2 SN
-- BMS Slave 3 Version
-- BMS Slave 3 SN
-- BMS Slave 4 Version
-- BMS Slave 4 SN
-- BMS Slave 5 Version
-- BMS Slave 5 SN
-- BMS Voltage
-- BMS Current
-- BMS Ambient Temp
-- BMS SoC
-- BMS SOH
-- BMS Remain Energy
-- Meter Connection Status
-- R Phase Voltage
-- S Phase Voltage
-- T Phase Voltage
-- R Phase Current
-- S Phase Current
-- T Phase Current
-- Combined Active Power
-- Frequency
-- Rated Power (Pn)
-- Max Active Power (Pmax)
-- Status
-- Grid R Voltage
-- Grid S Voltage
-- Grid T Voltage
-- Grid Frequency
-- Inverter Temp
-- System SoC
-- Active Power
-- Reactive Power
-- Grid Power (Meter)
-- EPS Power
-- Load Power
-- Battery Power
-- Load Consumption Today
-- Load Consumption Total
-- Grid Export Today
-- Grid Export Total
-- Grid Import Today
-- Grid Import Total
-- Battery Charge Today
-- Battery Charge Total
-- Battery Discharge Today
-- Battery Discharge Total
-- Battery Charging
-- Battery Discharging
-- Grid Import
-- Grid Export
+#### Key Metrics
+- **System SoC:** Overall State of Charge of the system.
+- **BMS SoC:** State of Charge of the Battery Management System.
+- **Battery Power:** Current power flow of the battery (positive is charging, negative is discharging).
+- **Load Power:** Current power consumption of your house.
+- **Grid Power (Meter):** Current power flow from/to the grid (positive is import, negative is export).
+
+#### Derived Power Sensors
+These sensors provide a more granular view of power flow.
+- **Battery Charging**
+- **Battery Discharging**
+- **Grid Import**
+- **Grid Export**
+
+#### Energy Statistics
+- **Load Consumption (Today/Total)**
+- **Grid Export (Today/Total)**
+- **Grid Import (Today/Total)**
+- **Battery Charge (Today/Total)**
+- **Battery Discharge (Today/Total)**
+
+#### BMS & Inverter Details
+- **BMS Voltage**
+- **BMS Current**
+- **BMS SOH** (State of Health)
+- **BMS Ambient Temp**
+- **Inverter Temp**
+- **Grid Frequency**
+
+#### Disabled by Default
+The following sensors are disabled by default and can be enabled manually if needed:
+- **Device Information:** Model Name, Serial Numbers, and all firmware versions.
+- **BMS Slave Devices:** Version and Serial Number for all 5 slave slots.
+- **Status Codes:** Raw status codes for the inverter, BMS, and meter.
+- **Grid Phase Details:** Individual voltage and current for all three phases (R/S/T).
+- **Power Ratings:** Rated Power, Max Active Power.
+- **Other Power Metrics:** Reactive Power, EPS Power.
 
 ---
+
+## Disclaimer
+
+**This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by NextEnergy.**
 
 ![NextEnergy Logo](custom_components/nextenergy_battery/logo.png)
