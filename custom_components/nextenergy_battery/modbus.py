@@ -16,7 +16,7 @@ class NextEnergyModbusClient:
         self._host = host
         self._port = port
         self._slave_id = slave_id
-        self._client = ModbusTcpClient(host, port, timeout=5)
+        self._client = ModbusTcpClient(host=host, port=port, timeout=5)
 
     def connect(self):
         """Connect to the Modbus device."""
@@ -34,7 +34,7 @@ class NextEnergyModbusClient:
 
         _LOGGER.debug(f"Reading sensor {name} from address {address} with count {count}")
         
-        result = self._client.read_holding_registers(address=address, count=count, slave=self._slave_id)
+        result = self._client.read_holding_registers(address=address, count=count, device_id=self._slave_id)
         if result.isError():
             _LOGGER.debug(f"Error reading sensor {name}: {result}")
             return None
