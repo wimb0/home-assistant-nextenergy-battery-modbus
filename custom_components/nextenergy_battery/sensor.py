@@ -19,16 +19,57 @@ from .const import DOMAIN, SENSORS
 from .coordinator import NextEnergyDataCoordinator
 
 
-ENTITY_DESCRIPTIONS = [
-    SensorEntityDescription(
-        key=key,
-        name=name,
-        native_unit_of_measurement=unit,
-        device_class=device_class,
-        state_class=state_class,
+DISABLED_BY_DEFAULT = [
+    "serial_number",
+    "master_version",
+    "slave_version",
+    "manager_version",
+    "bms_master_version",
+    "bms_master_sn",
+    "bms_slave_1_version",
+    "bms_slave_1_sn",
+    "bms_slave_2_version",
+    "bms_slave_2_sn",
+    "bms_slave_3_version",
+    "bms_slave_3_sn",
+    "bms_slave_4_version",
+    "bms_slave_4_sn",
+    "bms_slave_5_version",
+    "bms_slave_5_sn",
+    "bms_connection_status",
+    "meter_connection_status",
+    "r_phase_voltage",
+    "s_phase_voltage",
+    "t_phase_voltage",
+    "r_phase_current",
+    "s_phase_current",
+    "t_phase_current",
+    "grid_r_voltage",
+    "grid_s_voltage",
+    "grid_t_voltage",
+    "rated_power",
+    "max_active_power",
+    "status",
+    "eps_power",
+    "reactive_power",
+]
+
+
+ENTITY_DESCRIPTIONS = []
+for key, (name, _, _, unit, device_class, state_class, _, _) in SENSORS.items():
+    enabled_by_default = key not in DISABLED_BY_DEFAULT
+    ENTITY_DESCRIPTIONS.append(
+        SensorEntityDescription(
+            key=key,
+            name=name,
+            native_unit_of_measurement=unit,
+            device_class=device_class,
+            state_class=state_class,
+            entity_registry_enabled_default=enabled_by_default,
+        )
     )
-    for key, (name, _, _, unit, device_class, state_class, _, _) in SENSORS.items()
-] + [
+
+ENTITY_DESCRIPTIONS.extend([
     SensorEntityDescription(
         key="battery_charging",
         name="Battery Charging",
@@ -57,7 +98,7 @@ ENTITY_DESCRIPTIONS = [
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
     ),
-]
+])
 
 
 async def async_setup_entry(
