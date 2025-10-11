@@ -3,12 +3,16 @@ import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+import homeassistant.helpers.config_validation as cv
+import voluptuous as vol
 
 from .const import DOMAIN, PLATFORMS
 from .modbus import NextEnergyModbusClient
 from .coordinator import NextEnergyDataCoordinator
 
 _LOGGER = logging.getLogger(__name__)
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
