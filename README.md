@@ -1,6 +1,12 @@
-# Home Assistant NextEnergy Battery Modbus Integration
+[![release][release-badge]][release-url]
+![active][active-badge]
+![downloads][downloads-badge]
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
+[![hacs][hacs-badge]][hacs-url]
+![license][lic-badge]
+[![buymecoffeebadge]][buymecoffeeurl]
+
+# Home Assistant NextEnergy Battery Modbus Integration
 
 This is a custom integration for Home Assistant to monitor NextEnergy batteries via Modbus TCP.
 
@@ -66,3 +72,18 @@ The following sensors are disabled by default and can be enabled manually if nee
 **This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by NextEnergy.**
 
 ![NextEnergy Logo](custom_components/nextenergy_battery/logo.png)
+
+<!-- Badges -->
+[hacs-url]: https://github.com/hacs/integration
+[hacs-badge]: https://img.shields.io/badge/hacs-default-orange.svg?style=for-the-badge
+[release-badge]: https://img.shields.io/github/v/release/wimb0/home-assistant-nextenergy-battery-modbus?style=for-the-badge
+[downloads-badge]: https://img.shields.io/github/downloads/wimb0/home-assistant-nextenergy-battery-modbus/total?style=for-the-badge
+[active-badge]: https://badge.t-haber.de/badge/nextenergy_battery?kill_cache=1
+[lic-badge]: https://img.shields.io/github/license/wimb0/home-assistant-nextenergy-battery-modbus?style=for-the-badge
+[buymecoffeeurl]: https://www.buymeacoffee.com/wimbo
+[buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
+<!-- References -->
+
+[home-assistant]: https://www.home-assistant.io/
+[hacs]: https://hacs.xyz
+[release-url]: https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/releases
