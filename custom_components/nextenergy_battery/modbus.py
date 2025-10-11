@@ -40,6 +40,20 @@ class NextEnergyModbusClient:
             return None
 
         registers = result.registers
+
+        # Special handling for version sensors
+        if sensor_key in [
+            "master_version",
+            "bms_master_version",
+            "bms_slave_1_version",
+            "bms_slave_2_version",
+            "bms_slave_3_version",
+            "bms_slave_4_version",
+            "bms_slave_5_version",
+        ]:
+            value = registers[0]
+            return f"{(value >> 8) & 0xF}.{(value >> 4) & 0xF}.{value & 0xF}"
+
         if is_string:
             # Manual string decoding
             return "".join(
