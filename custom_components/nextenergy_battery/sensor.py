@@ -1,333 +1,100 @@
 """Platform for sensor integration."""
-from datetime import timedelta
+from __future__ import annotations
 
-from homeassistant.helpers.entity import Entity
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+from homeassistant.components.sensor import (
+    SensorEntity,
+    SensorEntityDescription,
+    SensorDeviceClass,
+    SensorStateClass,
+)
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.const import (
+    UnitOfPower,
+)
 
-from .const import DOMAIN, REGISTER_ADDRESSES, SCALING_FACTORS
-from .modbus import NextEnergyModbusClient
+from .const import DOMAIN, SENSORS
+from .coordinator import NextEnergyDataCoordinator
 
 
-async def async_setup_entry(hass, config_entry, async_add_entities):
+ENTITY_DESCRIPTIONS = [
+    SensorEntityDescription(
+        key=key,
+        name=name,
+        native_unit_of_measurement=unit,
+        device_class=device_class,
+        state_class=state_class,
+    )
+    for key, (name, _, _, unit, device_class, state_class, _, _) in SENSORS.items()
+] + [
+    SensorEntityDescription(
+        key="battery_charging",
+        name="Battery Charging",
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="battery_discharging",
+        name="Battery Discharging",
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="grid_import",
+        name="Grid Import",
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    SensorEntityDescription(
+        key="grid_export",
+        name="Grid Export",
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+]
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
     """Set up the sensor platform."""
-    host = config_entry.data["host"]
-    port = config_entry.data["port"]
-    slave_id = config_entry.data["slave_id"]
-    polling_interval = config_entry.options.get("polling_interval", 30)
-
-    client = NextEnergyModbusClient(host, port, slave_id)
-    client.connect()
-
-    sensors = [
-        NextEnergySensor(
-            client,
-            config_entry,
-            "SoC",
-            "soc",
-            "%",
-            SensorDeviceClass.BATTERY,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Generation",
-            "generation",
-            "W",
-            SensorDeviceClass.POWER,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Consumption",
-            "consumption",
-            "W",
-            SensorDeviceClass.POWER,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Grid",
-            "grid",
-            "W",
-            SensorDeviceClass.POWER,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Battery Charging",
-            "battery_charging",
-            "W",
-            SensorDeviceClass.POWER,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Battery Discharging",
-            "battery_discharging",
-            "W",
-            SensorDeviceClass.POWER,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Grid Export",
-            "grid_export",
-            "W",
-            SensorDeviceClass.POWER,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Grid Import",
-            "grid_import",
-            "W",
-            SensorDeviceClass.POWER,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Grid Frequency",
-            "grid_frequency",
-            "Hz",
-            SensorDeviceClass.FREQUENCY,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Battery Temp",
-            "battery_temp",
-            "°C",
-            SensorDeviceClass.TEMPERATURE,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Inverter Temp",
-            "inverter_temp",
-            "°C",
-            SensorDeviceClass.TEMPERATURE,
-            SensorStateClass.MEASUREMENT,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Today's Generation",
-            "todays_generation",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Cumulative Generation",
-            "cumulative_generation",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Today's Load Consumption",
-            "todays_load_consumption",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Total Load Consumption",
-            "total_load_consumption",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Today's Grid Export",
-            "todays_grid_export",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Total Grid Export",
-            "total_grid_export",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Today's Grid Import",
-            "todays_grid_import",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Total Grid Import",
-            "total_grid_import",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Today's Battery Charge",
-            "todays_battery_charge",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Total Battery Charge",
-            "total_battery_charge",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Today's Battery Discharge",
-            "todays_battery_discharge",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-        NextEnergySensor(
-            client,
-            config_entry,
-            "Total Battery Discharge",
-            "total_battery_discharge",
-            "kWh",
-            SensorDeviceClass.ENERGY,
-            SensorStateClass.TOTAL_INCREASING,
-        ),
-    ]
-
-    async_add_entities(sensors, update_before_add=True)
+    coordinator = hass.data[DOMAIN][entry.entry_id]
+    async_add_entities(
+        NextEnergySensor(coordinator=coordinator, entity_description=entity_description)
+        for entity_description in ENTITY_DESCRIPTIONS
+    )
 
 
-class NextEnergySensor(Entity):
+class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntity):
     """Representation of a NextEnergy Battery sensor."""
 
     def __init__(
         self,
-        client,
-        config_entry,
-        name,
-        register_name,
-        unit_of_measurement,
-        device_class,
-        state_class,
-    ):
+        coordinator: NextEnergyDataCoordinator,
+        entity_description: SensorEntityDescription,
+    ) -> None:
         """Initialize the sensor."""
-        self._client = client
-        self._config_entry = config_entry
-        self._name = name
-        self._register_name = register_name
-        self._unit_of_measurement = unit_of_measurement
-        self._device_class = device_class
-        self._state_class = state_class
-        self._state = None
-
-    @property
-    def name(self):
-        """Return the name of the sensor."""
-        return f"NextEnergy {self._name}"
-
-    @property
-    def unique_id(self):
-        """Return a unique ID."""
-        return f"{self._config_entry.entry_id}_{self._register_name}"
-
-    @property
-    def unit_of_measurement(self):
-        """Return the unit of measurement."""
-        return self._unit_of_measurement
-
-    @property
-    def device_class(self):
-        """Return the device class of the sensor."""
-        return self._device_class
-
-    @property
-    def state_class(self):
-        """Return the state class of the sensor."""
-        return self._state_class
-
-    @property
-    def device_info(self):
-        """Return device information."""
-        return {
-            "identifiers": {(DOMAIN, self._config_entry.entry_id)},
+        super().__init__(coordinator)
+        self.entity_description = entity_description
+        self._attr_unique_id = f"{coordinator.config_entry.entry_id}_{entity_description.key}"
+        self._attr_device_info = {
+            "identifiers": {(DOMAIN, coordinator.config_entry.entry_id)},
             "name": "NextEnergy Battery",
             "manufacturer": "NextEnergy",
+            "model": coordinator.data.get("model_name"),
+            "sw_version": coordinator.data.get("master_version"),
+            "serial_number": coordinator.data.get("serial_number"),
         }
 
     @property
-    def state(self):
+    def native_value(self) -> float | int | str | None:
         """Return the state of the sensor."""
-        return self._state
-
-    def update(self):
-        """Fetch new state data for the sensor."""
-        if self._register_name in REGISTER_ADDRESSES:
-            address = REGISTER_ADDRESSES[self._register_name]
-            result = self._client.read_register(address)
-            if result is not None and hasattr(result, 'registers'):
-                value = result.registers[0] * SCALING_FACTORS[self._register_name]
-                if self._register_name == "battery":
-                    if value > 0:
-                        self.hass.data[DOMAIN][self._config_entry.entry_id]["battery_charging"] = value
-                        self.hass.data[DOMAIN][self._config_entry.entry_id]["battery_discharging"] = 0
-                    else:
-                        self.hass.data[DOMAIN][self._config_entry.entry_id]["battery_charging"] = 0
-                        self.hass.data[DOMAIN][self._config_entry.entry_id]["battery_discharging"] = abs(value)
-                elif self._register_name == "grid":
-                    if value > 0:
-                        self.hass.data[DOMAIN][self._config_entry.entry_id]["grid_import"] = value
-                        self.hass.data[DOMAIN][self._config_entry.entry_id]["grid_export"] = 0
-                    else:
-                        self.hass.data[DOMAIN][self._config_entry.entry_id]["grid_import"] = 0
-                        self.hass.data[DOMAIN][self._config_entry.entry_id]["grid_export"] = abs(value)
-                else:
-                    self._state = value
-            else:
-                self._state = None
-        elif self._register_name == "battery_charging":
-            self._state = self.hass.data[DOMAIN].get(self._config_entry.entry_id, {}).get("battery_charging")
-        elif self._register_name == "battery_discharging":
-            self._state = self.hass.data[DOMAIN].get(self._config_entry.entry_id, {}).get("battery_discharging")
-        elif self._register_name == "grid_import":
-            self._state = self.hass.data[DOMAIN].get(self._config_entry.entry_id, {}).get("grid_import")
-        elif self._register_name == "grid_export":
-            self._state = self.hass.data[DOMAIN].get(self._config_entry.entry_id, {}).get("grid_export")
-
-    @property
-    def scan_interval(self):
-        """Return the scan interval."""
-        return timedelta(seconds=self._config_entry.options.get("polling_interval", 30))
+        return self.coordinator.data.get(self.entity_description.key)

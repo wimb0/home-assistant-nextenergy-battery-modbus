@@ -1,9 +1,6 @@
-
 """Options flow for NextEnergy Battery."""
 import voluptuous as vol
 from homeassistant import config_entries
-
-from .const import DOMAIN
 
 
 class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
