@@ -4,7 +4,6 @@ from homeassistant import config_entries
 from homeassistant.const import CONF_HOST, CONF_PORT
 
 from .const import DOMAIN
-from .modbus import NextEnergyModbusClient
 
 
 class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
@@ -49,21 +48,8 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(user_input[CONF_HOST])
             self._abort_if_unique_id_configured()
 
-            client = NextEnergyModbusClient(
-                host=user_input[CONF_HOST],
-                port=user_input[CONF_PORT],
-                slave_id=user_input["slave_id"],
-            )
-
-            try:
-                if not await client.async_connect():
-                    errors["base"] = "cannot_connect"
-                else:
-                    return self.async_create_entry(
-                        title=user_input[CONF_HOST], data=user_input
-                    )
-            finally:
-                client.close()
+            # No connection test, just create the entry
+            return self.async_create_entry(title=user_input[CONF_HOST], data=user_input)
 
         data_schema = vol.Schema(
             {

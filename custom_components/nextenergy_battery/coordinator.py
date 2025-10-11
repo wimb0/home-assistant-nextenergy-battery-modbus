@@ -29,7 +29,7 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator):
         This is the place to pre-process the data to lookup tables
         so entities can quickly look up their data.
         """
-        data = await self.client.async_read_all_sensors()
+        data = await self.hass.async_add_executor_job(self.client.read_all_sensors)
 
         # Split battery power into charging and discharging
         if data and "battery_power" in data and data["battery_power"] is not None:
