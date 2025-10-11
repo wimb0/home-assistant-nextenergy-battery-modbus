@@ -70,7 +70,7 @@ The following sensors are disabled by default and can be enabled manually if nee
 
 **This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by NextEnergy.**
 
-![NextEnergy Logo](custom_components/nextenergy_battery/logo.png)
+![NextEnergy Logo](images/nextenergy_battery/logo.png)
 
 <!-- Badges -->
 [hacs-url]: https://github.com/hacs/integration
