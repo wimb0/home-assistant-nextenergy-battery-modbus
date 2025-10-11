@@ -74,7 +74,7 @@ The following sensors are disabled by default and can be enabled manually if nee
 
 <!-- Badges -->
 [hacs-url]: https://github.com/hacs/integration
-[hacs-badge]: https://img.shields.io/badge/hacs-default-orange.svg?style=for-the-badge
+[hacs-badge]: https://img.shields.io/badge/hacs-orange.svg?style=for-the-badge
 [release-badge]: https://img.shields.io/github/v/release/wimb0/home-assistant-nextenergy-battery-modbus?style=for-the-badge
 [downloads-badge]: https://img.shields.io/github/downloads/wimb0/home-assistant-nextenergy-battery-modbus/total?style=for-the-badge
 [lic-badge]: https://img.shields.io/github/license/wimb0/home-assistant-nextenergy-battery-modbus?style=for-the-badge
