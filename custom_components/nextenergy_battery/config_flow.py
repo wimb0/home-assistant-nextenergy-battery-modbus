@@ -3,7 +3,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST, CONF_PORT
 
-from .const import DOMAIN
+from .const import DOMAIN, DEFAULT_POLLING_INTERVAL, CONF_POLLING_INTERVAL
 
 
 class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
@@ -21,8 +21,10 @@ class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
         options_schema = vol.Schema(
             {
                 vol.Optional(
-                    "polling_interval",
-                    default=self.config_entry.options.get("polling_interval", 30),
+                    CONF_POLLING_INTERVAL,
+                    default=self.config_entry.options.get(
+                        CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL
+                    ),
                 ): int,
             }
         )
@@ -48,14 +50,27 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(user_input[CONF_HOST])
             self._abort_if_unique_id_configured()
 
-            # No connection test, just create the entry
-            return self.async_create_entry(title=user_input[CONF_HOST], data=user_input)
+            data = {
+                CONF_HOST: user_input[CONF_HOST],
+                CONF_PORT: user_input[CONF_PORT],
+                "slave_id": user_input["slave_id"],
+            }
+            options = {
+                CONF_POLLING_INTERVAL: user_input[CONF_POLLING_INTERVAL],
+            }
+
+            return self.async_create_entry(
+                title=user_input[CONF_HOST], data=data, options=options
+            )
 
         data_schema = vol.Schema(
             {
                 vol.Required(CONF_HOST): str,
                 vol.Required(CONF_PORT, default=502): int,
                 vol.Required("slave_id", default=1): int,
+                vol.Required(
+                    CONF_POLLING_INTERVAL, default=DEFAULT_POLLING_INTERVAL
+                ): int,
             }
         )
 

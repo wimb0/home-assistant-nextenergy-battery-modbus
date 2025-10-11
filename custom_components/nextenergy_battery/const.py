@@ -14,13 +14,15 @@ from homeassistant.const import (
 
 DOMAIN = "nextenergy_battery"
 PLATFORMS = ["sensor"]
+DEFAULT_POLLING_INTERVAL = 30
+CONF_POLLING_INTERVAL = "polling_interval"
 
 # Defines the structure of a sensor, including its name, register, scale, unit, device class, state class,
 # whether it's a string, and the number of registers it occupies.
 # (name, register, scale, unit, device_class, state_class, is_string, register_count)
 SENSORS = {
     "model_name": ("Model Name", 30000, 1, None, None, None, True, 8),
-    "serial_number": ("SN", 30016, 1, None, None, None, True, 16),
+    "serial_number": ("Serial Number", 30016, 1, None, None, None, True, 16),
     "master_version": ("Master Version", 36001, 1, None, None, None, False, 1),
     "slave_version": ("Slave Version", 36002, 1, None, None, None, False, 1),
     "manager_version": ("Manager Version", 36003, 1, None, None, None, False, 1),
