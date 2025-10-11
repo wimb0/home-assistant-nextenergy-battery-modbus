@@ -1,5 +1,11 @@
 
 {
   "name": "NextEnergy Battery",
-  "render_readme": true
+  "content_in_root": false,
+  "homeassistant": "2025.9.0b0",
+  "render_readme": true,
+  "country": "NL",
+  "hide_default_branch": true,
+  "zip_release": true,
+  "filename": "home-assistant-nextenergy-battery-modbus.zip"
 }
