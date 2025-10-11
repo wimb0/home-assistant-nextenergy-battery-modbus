@@ -1,5 +1,6 @@
-
 # Home Assistant NextEnergy Battery Modbus Integration
+
+**This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by NextEnergy**
 
 This is a custom integration for Home Assistant to monitor NextEnergy batteries via Modbus TCP.
 
@@ -26,26 +27,70 @@ This is a custom integration for Home Assistant to monitor NextEnergy batteries 
 
 The integration will create the following sensors:
 
-- SoC
-- Generation
-- Consumption
-- Grid
+- Model Name
+- SN
+- Master Version
+- Slave Version
+- Manager Version
+- BMS Connection Status
+- BMS Master Version
+- BMS Master SN
+- BMS Slave Number
+- BMS Slave 1 Version
+- BMS Slave 1 SN
+- BMS Slave 2 Version
+- BMS Slave 2 SN
+- BMS Slave 3 Version
+- BMS Slave 3 SN
+- BMS Slave 4 Version
+- BMS Slave 4 SN
+- BMS Slave 5 Version
+- BMS Slave 5 SN
+- BMS Voltage
+- BMS Current
+- BMS Ambient Temp
+- BMS SoC
+- BMS SOH
+- BMS Remain Energy
+- Meter Connection Status
+- R Phase Voltage
+- S Phase Voltage
+- T Phase Voltage
+- R Phase Current
+- S Phase Current
+- T Phase Current
+- Combined Active Power
+- Frequency
+- Rated Power (Pn)
+- Max Active Power (Pmax)
+- Status
+- Grid R Voltage
+- Grid S Voltage
+- Grid T Voltage
+- Grid Frequency
+- Inverter Temp
+- System SoC
+- Active Power
+- Reactive Power
+- Grid Power (Meter)
+- EPS Power
+- Load Power
+- Battery Power
+- Load Consumption Today
+- Load Consumption Total
+- Grid Export Today
+- Grid Export Total
+- Grid Import Today
+- Grid Import Total
+- Battery Charge Today
+- Battery Charge Total
+- Battery Discharge Today
+- Battery Discharge Total
 - Battery Charging
 - Battery Discharging
-- Grid Export
 - Grid Import
-- Grid Frequency
-- Battery Temp
-- Inverter Temp
-- Today's Generation
-- Cumulative Generation
-- Today's Load Consumption
-- Total Load Consumption
-- Today's Grid Export
-- Total Grid Export
-- Today's Grid Import
-- Total Grid Import
-- Today's Battery Charge
-- Total Battery Charge
-- Today's Battery Discharge
-- Total Battery Discharge
+- Grid Export
+
+---
+
+![NextEnergy Logo](custom_components/nextenergy_battery/logo.png)
