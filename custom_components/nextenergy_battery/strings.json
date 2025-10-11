@@ -1,0 +1,23 @@
+
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "NextEnergy Battery",
+                "description": "Set up your NextEnergy Battery to integrate with Home Assistant.",
+                "data": {
+                    "host": "Host",
+                    "port": "Port",
+                    "slave_id": "Slave ID"
+                }
+            }
+        },
+        "error": {
+            "cannot_connect": "Failed to connect to the Modbus device.",
+            "unknown": "An unknown error occurred."
+        },
+        "abort": {
+            "already_configured": "This NextEnergy Battery is already configured."
+        }
+    }
+}
