@@ -1,7 +1,7 @@
 """Modbus communication for NextEnergy Battery."""
 import logging
 from pymodbus.client import ModbusTcpClient
-from pymodbus.exceptions import ConnectionException
+from pymodbus.exceptions import ConnectionException, ModbusIOException
 
 from .const import SENSORS
 
@@ -16,7 +16,7 @@ class NextEnergyModbusClient:
         self._host = host
         self._port = port
         self._slave_id = slave_id
-        self._client = ModbusTcpClient(host=host, port=port, timeout=5)
+        self._client = ModbusTcpClient(host=host, port=port, timeout=5, retries=3)
 
     def connect(self):
         """Connect to the Modbus device."""
@@ -80,12 +80,19 @@ class NextEnergyModbusClient:
     def read_all_sensors(self):
         """Read all sensor values from the Modbus device."""
         if not self._client.is_socket_open():
-            self.connect()
+            if not self.connect():
+                _LOGGER.error("Failed to connect to Modbus device.")
+                raise ConnectionException("Failed to connect")
 
         data = {}
         for sensor_key in SENSORS:
             try:
                 data[sensor_key] = self.read_sensor(sensor_key)
+            except (ConnectionException, ModbusIOException, BrokenPipeError) as e:
+                _LOGGER.warning(
+                    f"Connection error reading sensor {sensor_key}: {e}. Update will be retried."
+                )
+                raise
             except Exception as e:
                 _LOGGER.error(f"Error reading sensor {sensor_key}: {e}")
                 data[sensor_key] = None
