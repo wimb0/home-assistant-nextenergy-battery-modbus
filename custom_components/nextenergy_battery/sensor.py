@@ -29,7 +29,7 @@ async def async_setup_entry(
 
     entities: list[NextEnergySensor] = []
 
-    for key, (register, scale, unit, device_class, state_class, is_string, register_count) in SENSORS.items():
+    for key, (register, scale, unit, device_class, state_class, is_string, register_count, entity_category) in SENSORS.items():
         enabled_by_default = key not in DISABLED_BY_DEFAULT
         description = SensorEntityDescription(
             key=key,
@@ -38,6 +38,7 @@ async def async_setup_entry(
             device_class=device_class,
             state_class=state_class,
             entity_registry_enabled_default=enabled_by_default,
+            entity_category=entity_category,
         )
         entities.append(NextEnergySensor(coordinator, description))
 
