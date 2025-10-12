@@ -110,7 +110,7 @@ async def async_setup_entry(
     coordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
         NextEnergySensor(coordinator=coordinator, entity_description=entity_description)
-        for entity_description in ENTITY_DESCRIPTIONS
+        for entity_description in entity_descriptions
     )
 
 
