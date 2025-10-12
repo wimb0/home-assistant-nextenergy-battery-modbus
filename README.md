@@ -1,6 +1,6 @@
 [![release][release-badge]][release-url]
 ![downloads][downloads-badge]
-
+![active][active-badge]
 [![hacs][hacs-badge]][hacs-url]
 ![license][lic-badge]
 [![buymecoffeebadge]][buymecoffeeurl]
@@ -75,9 +75,10 @@ The following sensors are disabled by default and can be enabled manually if nee
 
 <!-- Badges -->
 [hacs-url]: https://github.com/hacs/integration
-[hacs-badge]: https://img.shields.io/badge/hacs-orange.svg?style=for-the-badge
+[hacs-badge]: https://img.shields.io/badge/hacs-default-orange.svg?style=for-the-badge
 [release-badge]: https://img.shields.io/github/v/release/wimb0/home-assistant-nextenergy-battery-modbus?style=for-the-badge
 [downloads-badge]: https://img.shields.io/github/downloads/wimb0/home-assistant-nextenergy-battery-modbus/total?style=for-the-badge
+[active-badge]: https://badge.t-haber.de/badge/nextenergy_battery?kill_cache=1
 [lic-badge]: https://img.shields.io/github/license/wimb0/home-assistant-nextenergy-battery-modbus?style=for-the-badge
 [buymecoffeeurl]: https://www.buymeacoffee.com/wimbo
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
