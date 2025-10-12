@@ -24,9 +24,9 @@ CONF_PREFIX = "prefix"
 DEFAULT_PREFIX = "nextenergy"
 CONF_SLAVE_ID = "slave_id"
 
-# Defines the structure of a sensor, including its register, scale, unit, device class, state class,
-# whether it's a string, the number of registers it occupies, and an optional entity category.
-# (register, scale, unit, device_class, state_class, is_string, register_count, entity_category)
+# Defines the structure of a sensor, including its name, register, scale, unit, device class, state class,
+# whether it's a string, and the number of registers it occupies.
+# (name, register, scale, unit, device_class, state_class, is_string, register_count)
 SENSORS = {
     "model_name": (30000, 1, None, None, None, True, 8, EntityCategory.DIAGNOSTIC),
     "serial_number": (30016, 1, None, None, None, True, 16, EntityCategory.DIAGNOSTIC),
