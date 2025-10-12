@@ -14,7 +14,7 @@
             }
         },
         "error": {
-            "cannot_connect": "Failed to connect to the Modbus device.",
+            "cannot_connect": "Failed to connect to the NextEnergy Battery.",
             "unknown": "An unknown error occurred."
         },
         "abort": {
