@@ -7,6 +7,8 @@ from .const import (
     DOMAIN,
     DEFAULT_POLLING_INTERVAL,
     CONF_POLLING_INTERVAL,
+    CONF_PREFIX,
+    DEFAULT_PREFIX,
     CONF_SLAVE_ID,
 )
 
@@ -18,6 +20,7 @@ DATA_SCHEMA = vol.Schema(
         vol.Required(
             CONF_POLLING_INTERVAL, default=DEFAULT_POLLING_INTERVAL
         ): int,
+        vol.Required(CONF_PREFIX, default=DEFAULT_PREFIX): str,
     }
 )
 
@@ -76,6 +79,7 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             }
             options = {
                 CONF_POLLING_INTERVAL: user_input[CONF_POLLING_INTERVAL],
+                CONF_PREFIX: user_input[CONF_PREFIX],
             }
 
             return self.async_create_entry(

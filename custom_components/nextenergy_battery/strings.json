@@ -9,12 +9,12 @@
                     "host": "Host",
                     "port": "Port",
                     "slave_id": "Slave ID",
-                    "prefix": "Name for the device in Home Assistant. This will be used to prefix entity IDs."
+                    "prefix": "Prefix for sensor names"
                 }
             }
         },
         "error": {
-            "cannot_connect": "Failed to connect to the NextEnergy Battery.",
+            "cannot_connect": "Failed to connect to the Modbus device.",
             "unknown": "An unknown error occurred."
         },
         "abort": {
