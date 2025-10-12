@@ -15,7 +15,7 @@ from homeassistant.const import (
     UnitOfPower,
 )
 
-from .const import DOMAIN, SENSORS, DISABLED_BY_DEFAULT
+from .const import DOMAIN, SENSORS, DISABLED_BY_DEFAULT, MANUFACTURER
 from .coordinator import NextEnergyDataCoordinator
 
 
@@ -97,7 +97,7 @@ class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntit
         self._attr_device_info = {
             "identifiers": {(DOMAIN, coordinator.config_entry.entry_id)},
             "name": coordinator.prefix,
-            "manufacturer": "NextEnergy",
+            "manufacturer": MANUFACTURER,
             "model": coordinator.data.get("model_name"),
             "sw_version": coordinator.data.get("master_version"),
             "serial_number": coordinator.data.get("serial_number"),

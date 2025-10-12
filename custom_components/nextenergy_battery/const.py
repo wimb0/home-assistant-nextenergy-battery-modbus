@@ -12,10 +12,12 @@ from homeassistant.const import (
     UnitOfFrequency,
 )
 
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.helpers.entity import EntityCategory
 
 DOMAIN = "nextenergy_battery"
-PLATFORMS = ["sensor", "diagnostics"]
+MANUFACTURER = "NextEnergy"
+PLATFORMS = ["sensor", "diagnostics", "binary_sensor"]
 DEFAULT_POLLING_INTERVAL = 30
 CONF_POLLING_INTERVAL = "polling_interval"
 CONF_PREFIX = "prefix"
@@ -29,7 +31,6 @@ SENSORS = {
     "model_name": (30000, 1, None, None, None, True, 8, EntityCategory.DIAGNOSTIC),
     "serial_number": (30016, 1, None, None, None, True, 16, EntityCategory.DIAGNOSTIC),
     "master_version": (36001, 1, None, None, None, False, 1, EntityCategory.DIAGNOSTIC),
-    "bms_connection_status": (37002, 1, None, SensorDeviceClass.CONNECTIVITY, None, False, 1, EntityCategory.DIAGNOSTIC),
     "bms_master_version": (37003, 1, None, None, None, False, 1, EntityCategory.DIAGNOSTIC),
     "bms_master_sn": (37005, 1, None, None, None, True, 16, EntityCategory.DIAGNOSTIC),
     "bms_slave_number": (37032, 1, None, None, None, False, 1, EntityCategory.DIAGNOSTIC),
@@ -49,7 +50,6 @@ SENSORS = {
     "bms_soc": (37612, 1, "%", SensorDeviceClass.BATTERY, SensorStateClass.MEASUREMENT, False, 1, None),
     "bms_soh": (37624, 1, "%", None, SensorStateClass.MEASUREMENT, False, 1, None),
     "bms_remain_energy": (37632, 0.1, UnitOfEnergy.WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL, False, 1, None),
-    "meter_connection_status": (38801, 1, None, SensorDeviceClass.CONNECTIVITY, None, False, 1, EntityCategory.DIAGNOSTIC),
     "r_phase_voltage": (38802, 0.1, UnitOfElectricPotential.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 2, None),
     "s_phase_voltage": (38804, 0.1, UnitOfElectricPotential.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 2, None),
     "t_phase_voltage": (38806, 0.1, UnitOfElectricPotential.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 2, None),
@@ -80,6 +80,11 @@ SENSORS = {
     "grid_export_today": (39615, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
     "grid_import_total": (39617, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
     "grid_import_today": (39619, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
+}
+
+BINARY_SENSORS = {
+    "bms_connection_status": (37002, BinarySensorDeviceClass.CONNECTIVITY, EntityCategory.DIAGNOSTIC),
+    "meter_connection_status": (38801, BinarySensorDeviceClass.CONNECTIVITY, EntityCategory.DIAGNOSTIC),
 }
 
 DISABLED_BY_DEFAULT = [
