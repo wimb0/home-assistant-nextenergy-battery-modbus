@@ -8,8 +8,6 @@ import homeassistant.helpers.config_validation as cv
 from .const import (
     DOMAIN,
     PLATFORMS,
-    CONF_PREFIX,
-    DEFAULT_PREFIX,
     CONF_SLAVE_ID,
     CONF_POLLING_INTERVAL,
     DEFAULT_POLLING_INTERVAL,
@@ -35,15 +33,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     host = entry.data["host"]
     port = entry.data["port"]
     slave_id = entry.data[CONF_SLAVE_ID]
-    prefix = entry.options.get(CONF_PREFIX, DEFAULT_PREFIX)
-    if not prefix:
-        prefix = DEFAULT_PREFIX
     polling_interval = entry.options.get(
         CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL
     )
 
     client = NextEnergyModbusClient(host, port, slave_id)
-    coordinator = NextEnergyDataCoordinator(hass, client, polling_interval, prefix)
+    coordinator = NextEnergyDataCoordinator(hass, client, polling_interval)
 
     await coordinator.async_config_entry_first_refresh()
 
