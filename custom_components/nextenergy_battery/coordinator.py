@@ -13,9 +13,16 @@ _LOGGER = logging.getLogger(__name__)
 class NextEnergyDataCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the inverter."""
 
-    def __init__(self, hass, client: NextEnergyModbusClient, polling_interval: int):
+    def __init__(
+        self,
+        hass,
+        client: NextEnergyModbusClient,
+        polling_interval: int,
+        prefix: str,
+    ):
         """Initialize."""
         self.client = client
+        self.prefix = prefix
         super().__init__(
             hass,
             _LOGGER,
@@ -57,4 +64,6 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator):
             data["grid_import"] = None
             data["grid_export"] = None
 
-        return data
+        prefixed_data = {f"{self.prefix}_{key}": value for key, value in data.items()}
+
+        return prefixed_data

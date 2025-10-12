@@ -33,8 +33,8 @@ async def async_setup_entry(
         enabled_by_default = key not in DISABLED_BY_DEFAULT
         entity_descriptions.append(
             SensorEntityDescription(
-                key=key,
-                name=f"{prefix} {name}",
+                key=f"{prefix}_{key}",
+                name=name,
                 native_unit_of_measurement=unit,
                 device_class=device_class,
                 state_class=state_class,
@@ -44,29 +44,29 @@ async def async_setup_entry(
 
     entity_descriptions.extend([
         SensorEntityDescription(
-            key="battery_charging",
-            name=f"{prefix} Battery Charging",
+            key=f"{prefix}_battery_charging",
+            name="Battery Charging",
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
         ),
         SensorEntityDescription(
-            key="battery_discharging",
-            name=f"{prefix} Battery Discharging",
+            key=f"{prefix}_battery_discharging",
+            name="Battery Discharging",
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
         ),
         SensorEntityDescription(
-            key="grid_import",
-            name=f"{prefix} Grid Import",
+            key=f"{prefix}_grid_import",
+            name="Grid Import",
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
         ),
         SensorEntityDescription(
-            key="grid_export",
-            name=f"{prefix} Grid Export",
+            key=f"{prefix}_grid_export",
+            name="Grid Export",
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
@@ -95,9 +95,9 @@ class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntit
             "identifiers": {(DOMAIN, coordinator.config_entry.entry_id)},
             "name": "NextEnergy Battery",
             "manufacturer": "NextEnergy",
-            "model": coordinator.data.get("model_name"),
-            "sw_version": coordinator.data.get("master_version"),
-            "serial_number": coordinator.data.get("serial_number"),
+            "model": coordinator.data.get(f"{coordinator.prefix}_model_name"),
+            "sw_version": coordinator.data.get(f"{coordinator.prefix}_master_version"),
+            "serial_number": coordinator.data.get(f"{coordinator.prefix}_serial_number"),
         }
 
     @property
