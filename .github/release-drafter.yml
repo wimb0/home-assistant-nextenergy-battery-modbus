@@ -47,9 +47,9 @@ categories:
       - "dependencies"
 
 template: |
-  [![Downloads for this release](https://img.shields.io/github/downloads/wimb0/home-assistant-saj-r5-modbus/v$RESOLVED_VERSION/total.svg)](https://github.com/wimb0/home-assistant-saj-r5-modbus/releases/v$RESOLVED_VERSION)
+  [![Downloads for this release](https://img.shields.io/github/downloads/wimb0/home-assistant-nextenergy-battery-modbus/v$RESOLVED_VERSION/total.svg)](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/releases/v$RESOLVED_VERSION)
 
   $CHANGES
 
   ## Links
-  - [Submit bugs/feature requests](https://github.com/wimb0/home-assistant-saj-r5-modbus/issues)
+  - [Submit bugs/feature requests](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/issues)
