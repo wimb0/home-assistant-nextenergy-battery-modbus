@@ -84,8 +84,6 @@ SENSORS = {
 DISABLED_BY_DEFAULT = [
     "serial_number",
     "master_version",
-    "slave_version",
-    "manager_version",
     "bms_master_version",
     "bms_master_sn",
     "bms_slave_1_version",
