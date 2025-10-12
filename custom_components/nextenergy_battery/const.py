@@ -55,7 +55,6 @@ SENSORS = {
     "s_phase_current": ("S Phase Current", 38810, 0.001, UnitOfElectricCurrent.AMPERE, SensorDeviceClass.CURRENT, SensorStateClass.MEASUREMENT, False, 2),
     "t_phase_current": ("T Phase Current", 38812, 0.001, UnitOfElectricCurrent.AMPERE, SensorDeviceClass.CURRENT, SensorStateClass.MEASUREMENT, False, 2),
     "combined_active_power": ("Combined Active Power", 38814, 0.1, UnitOfPower.WATT, SensorDeviceClass.POWER, SensorStateClass.MEASUREMENT, False, 2),
-    "frequency": ("Frequency", 38846, 0.01, UnitOfFrequency.HERTZ, SensorDeviceClass.FREQUENCY, SensorStateClass.MEASUREMENT, False, 2),
     "rated_power": ("Rated Power (Pn)", 39053, 0.001, UnitOfPower.KILO_WATT, SensorDeviceClass.POWER, None, False, 2),
     "max_active_power": ("Max Active Power (Pmax)", 39055, 0.001, UnitOfPower.KILO_WATT, SensorDeviceClass.POWER, None, False, 2),
     "status": ("Status", 39063, 1, None, None, None, False, 1),
@@ -109,7 +108,6 @@ DISABLED_BY_DEFAULT = [
     "grid_t_voltage",
     "rated_power",
     "max_active_power",
-    "status",
     "eps_power",
     "reactive_power",
 ]
