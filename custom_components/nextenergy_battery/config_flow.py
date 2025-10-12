@@ -33,10 +33,6 @@ def options_schema(options: dict) -> vol.Schema:
                 CONF_POLLING_INTERVAL,
                 default=options.get(CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL),
             ): int,
-            vol.Optional(
-                CONF_PREFIX,
-                default=options.get(CONF_PREFIX, DEFAULT_PREFIX),
-            ): str,
         }
     )
 
