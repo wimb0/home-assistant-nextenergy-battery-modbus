@@ -10,6 +10,12 @@
 
 This is a custom integration for Home Assistant to monitor NextEnergy batteries via Modbus TCP.
 
+The battery is a Fox ESS MQ2200-M-AC and the expansion batteries are Fox ESS MQ2200-M-S.
+
+Implements Fox ESS Modbus registers from [`FoxESS Modbus Protocol--20250115 (V1.05.03.00)(1).pdf`](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/FoxESS%20Modbus%20Protocol--20250115%20(V1.05.03.00)(1).pdf).
+
+<img src="images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Batterij Master Unit" width="50%">
+
 ## Installation
 
 1.  **HACS (Custom Repository):**
@@ -79,6 +85,8 @@ The following sensors are disabled by default and can be enabled manually if nee
 **This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by NextEnergy.**
 
 ![NextEnergy Logo](images/nextenergy_battery/logo.png)
+
+<img src="images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Batterij Master Unit" width="50%"><img src="images/nextenergy_battery/Plug-in_Uitbreiding.png" alt="NextEnergy Batterij Master Unit" width="50%">
 
 [hacs-url]: https://github.com/hacs/integration
 [hacs-badge]: https://img.shields.io/badge/hacs-default-orange.svg?style=for-the-badge
