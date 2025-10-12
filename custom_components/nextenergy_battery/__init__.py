@@ -37,6 +37,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     port = entry.data["port"]
     slave_id = entry.data[CONF_SLAVE_ID]
     prefix = entry.options.get(CONF_PREFIX, DEFAULT_PREFIX)
+    if not prefix:
+        prefix = DEFAULT_PREFIX
     polling_interval = entry.options.get(
         CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL
     )

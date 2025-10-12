@@ -90,6 +90,7 @@ class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntit
         """Initialize the sensor."""
         super().__init__(coordinator)
         self.entity_description = entity_description
+        self.entity_id = f"sensor.{entity_description.key}"
         self._attr_unique_id = f"{coordinator.config_entry.entry_id}_{entity_description.key}"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, coordinator.config_entry.entry_id)},
