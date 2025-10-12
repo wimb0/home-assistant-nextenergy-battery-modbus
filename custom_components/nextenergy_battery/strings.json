@@ -9,7 +9,7 @@
                     "host": "Host",
                     "port": "Port",
                     "slave_id": "Slave ID",
-                    "prefix": "Prefix for sensor names"
+                    "prefix": "Name for the device in Home Assistant. This will be used to prefix entity IDs."
                 }
             }
         },

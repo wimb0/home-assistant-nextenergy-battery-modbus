@@ -19,5 +19,181 @@
         "abort": {
             "already_configured": "This NextEnergy Battery is already configured."
         }
+    },
+    "sensor": {
+        "model_name": {
+            "name": "Model Name"
+        },
+        "serial_number": {
+            "name": "Serial Number"
+        },
+        "master_version": {
+            "name": "Master Version"
+        },
+        "bms_connection_status": {
+            "name": "BMS Connection Status"
+        },
+        "bms_master_version": {
+            "name": "BMS Master Version"
+        },
+        "bms_master_sn": {
+            "name": "BMS Master Serial Number"
+        },
+        "bms_slave_number": {
+            "name": "BMS Slave Number"
+        },
+        "bms_slave_1_version": {
+            "name": "BMS Slave 1 Version"
+        },
+        "bms_slave_2_version": {
+            "name": "BMS Slave 2 Version"
+        },
+        "bms_slave_3_version": {
+            "name": "BMS Slave 3 Version"
+        },
+        "bms_slave_4_version": {
+            "name": "BMS Slave 4 Version"
+        },
+        "bms_slave_5_version": {
+            "name": "BMS Slave 5 Version"
+        },
+        "bms_slave_1_sn": {
+            "name": "BMS Slave 1 SN"
+        },
+        "bms_slave_2_sn": {
+            "name": "BMS Slave 2 SN"
+        },
+        "bms_slave_3_sn": {
+            "name": "BMS Slave 3 SN"
+        },
+        "bms_slave_4_sn": {
+            "name": "BMS Slave 4 SN"
+        },
+        "bms_slave_5_sn": {
+            "name": "BMS Slave 5 SN"
+        },
+        "bms_voltage": {
+            "name": "BMS Voltage"
+        },
+        "bms_current": {
+            "name": "BMS Current"
+        },
+        "bms_ambient_temp": {
+            "name": "BMS Ambient Temp"
+        },
+        "bms_soc": {
+            "name": "BMS SoC"
+        },
+        "bms_soh": {
+            "name": "BMS SOH"
+        },
+        "bms_remain_energy": {
+            "name": "BMS Remain Energy"
+        },
+        "meter_connection_status": {
+            "name": "Meter Connection Status"
+        },
+        "r_phase_voltage": {
+            "name": "R Phase Voltage"
+        },
+        "s_phase_voltage": {
+            "name": "S Phase Voltage"
+        },
+        "t_phase_voltage": {
+            "name": "T Phase Voltage"
+        },
+        "r_phase_current": {
+            "name": "R Phase Current"
+        },
+        "s_phase_current": {
+            "name": "S Phase Current"
+        },
+        "t_phase_current": {
+            "name": "T Phase Current"
+        },
+        "combined_active_power": {
+            "name": "Combined Active Power"
+        },
+        "rated_power": {
+            "name": "Rated Power (Pn)"
+        },
+        "max_active_power": {
+            "name": "Max Active Power (Pmax)"
+        },
+        "status": {
+            "name": "Status"
+        },
+        "grid_r_voltage": {
+            "name": "Grid R Voltage"
+        },
+        "grid_s_voltage": {
+            "name": "Grid S Voltage"
+        },
+        "grid_t_voltage": {
+            "name": "Grid T Voltage"
+        },
+        "active_power": {
+            "name": "Active Power"
+        },
+        "reactive_power": {
+            "name": "Reactive Power"
+        },
+        "grid_frequency": {
+            "name": "Grid Frequency"
+        },
+        "inverter_temp": {
+            "name": "Inverter Temp"
+        },
+        "grid_power_meter": {
+            "name": "Grid Power (Meter)"
+        },
+        "eps_power": {
+            "name": "EPS Power"
+        },
+        "load_power": {
+            "name": "Load Power"
+        },
+        "battery_power": {
+            "name": "Battery Power"
+        },
+        "system_soc": {
+            "name": "System SoC"
+        },
+        "battery_charge_total": {
+            "name": "Battery Charge Total"
+        },
+        "battery_charge_today": {
+            "name": "Battery Charge Today"
+        },
+        "battery_discharge_total": {
+            "name": "Battery Discharge Total"
+        },
+        "battery_discharge_today": {
+            "name": "Battery Discharge Today"
+        },
+        "grid_export_total": {
+            "name": "Grid Export Total"
+        },
+        "grid_export_today": {
+            "name": "Grid Export Today"
+        },
+        "grid_import_total": {
+            "name": "Grid Import Total"
+        },
+        "grid_import_today": {
+            "name": "Grid Import Today"
+        },
+        "battery_charging": {
+            "name": "Battery Charging"
+        },
+        "battery_discharging": {
+            "name": "Battery Discharging"
+        },
+        "grid_import": {
+            "name": "Grid Import"
+        },
+        "grid_export": {
+            "name": "Grid Export"
+        }
     }
 }

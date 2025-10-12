@@ -18,11 +18,9 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator):
         hass,
         client: NextEnergyModbusClient,
         polling_interval: int,
-        prefix: str,
     ):
         """Initialize."""
         self.client = client
-        self.prefix = prefix
         super().__init__(
             hass,
             _LOGGER,

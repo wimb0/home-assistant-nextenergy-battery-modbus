@@ -7,5 +7,5 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/issues",
   "requirements": ["pymodbus"],
-  "version": "1.0.0"
+  "version": "1.1.0"
 }

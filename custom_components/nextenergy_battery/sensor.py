@@ -25,62 +25,64 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the sensor platform."""
-    coordinator = hass.data[DOMAIN][entry.entry_id]
-    prefix = coordinator.prefix
+    coordinator: NextEnergyDataCoordinator = hass.data[DOMAIN][entry.entry_id]
 
-    entity_descriptions = []
-    for key, (name, _, _, unit, device_class, state_class, _, _) in SENSORS.items():
+    entities: list[NextEnergySensor] = []
+
+    for key, (register, scale, unit, device_class, state_class, is_string, register_count) in SENSORS.items():
         enabled_by_default = key not in DISABLED_BY_DEFAULT
-        entity_descriptions.append(
-            SensorEntityDescription(
-                key=f"{prefix}_{key}",
-                name=name,
-                native_unit_of_measurement=unit,
-                device_class=device_class,
-                state_class=state_class,
-                entity_registry_enabled_default=enabled_by_default,
-            )
+        description = SensorEntityDescription(
+            key=key,
+            translation_key=key,
+            native_unit_of_measurement=unit,
+            device_class=device_class,
+            state_class=state_class,
+            entity_registry_enabled_default=enabled_by_default,
         )
+        entities.append(NextEnergySensor(coordinator, description))
 
-    entity_descriptions.extend([
+    # Add derived sensors
+    derived_sensors = [
         SensorEntityDescription(
-            key=f"{prefix}_battery_charging",
-            name="Battery Charging",
+            key="battery_charging",
+            translation_key="battery_charging",
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
         ),
         SensorEntityDescription(
-            key=f"{prefix}_battery_discharging",
-            name="Battery Discharging",
+            key="battery_discharging",
+            translation_key="battery_discharging",
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
         ),
         SensorEntityDescription(
-            key=f"{prefix}_grid_import",
-            name="Grid Import",
+            key="grid_import",
+            translation_key="grid_import",
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
         ),
         SensorEntityDescription(
-            key=f"{prefix}_grid_export",
-            name="Grid Export",
+            key="grid_export",
+            translation_key="grid_export",
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
         ),
-    ])
+    ]
 
-    async_add_entities(
-        NextEnergySensor(coordinator=coordinator, entity_description=entity_description)
-        for entity_description in entity_descriptions
-    )
+    for description in derived_sensors:
+        entities.append(NextEnergySensor(coordinator, description))
+
+    async_add_entities(entities)
 
 
 class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntity):
     """Representation of a NextEnergy Battery sensor."""
+
+    entity_description: SensorEntityDescription
 
     def __init__(
         self,
@@ -90,11 +92,10 @@ class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntit
         """Initialize the sensor."""
         super().__init__(coordinator)
         self.entity_description = entity_description
-        self.entity_id = f"sensor.{entity_description.key}"
         self._attr_unique_id = f"{coordinator.config_entry.entry_id}_{entity_description.key}"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, coordinator.config_entry.entry_id)},
-            "name": "NextEnergy Battery",
+            "name": coordinator.prefix,
             "manufacturer": "NextEnergy",
             "model": coordinator.data.get("model_name"),
             "sw_version": coordinator.data.get("master_version"),
@@ -104,5 +105,4 @@ class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntit
     @property
     def native_value(self) -> float | int | str | None:
         """Return the state of the sensor."""
-        unprefixed_key = self.entity_description.key.replace(f"{self.coordinator.prefix}_", "", 1)
-        return self.coordinator.data.get(unprefixed_key)
+        return self.coordinator.data.get(self.entity_description.key)
