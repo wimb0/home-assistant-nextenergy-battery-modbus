@@ -95,12 +95,13 @@ class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntit
             "identifiers": {(DOMAIN, coordinator.config_entry.entry_id)},
             "name": "NextEnergy Battery",
             "manufacturer": "NextEnergy",
-            "model": coordinator.data.get(f"{coordinator.prefix}_model_name"),
-            "sw_version": coordinator.data.get(f"{coordinator.prefix}_master_version"),
-            "serial_number": coordinator.data.get(f"{coordinator.prefix}_serial_number"),
+            "model": coordinator.data.get("model_name"),
+            "sw_version": coordinator.data.get("master_version"),
+            "serial_number": coordinator.data.get("serial_number"),
         }
 
     @property
     def native_value(self) -> float | int | str | None:
         """Return the state of the sensor."""
-        return self.coordinator.data.get(self.entity_description.key)
+        unprefixed_key = self.entity_description.key.replace(f"{self.coordinator.prefix}_", "", 1)
+        return self.coordinator.data.get(unprefixed_key)

@@ -64,6 +64,4 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator):
             data["grid_import"] = None
             data["grid_export"] = None
 
-        prefixed_data = {f"{self.prefix}_{key}": value for key, value in data.items()}
-
-        return prefixed_data
+        return data

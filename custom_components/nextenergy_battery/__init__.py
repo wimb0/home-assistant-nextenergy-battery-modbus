@@ -28,10 +28,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     host = entry.data["host"]
     port = entry.data["port"]
     slave_id = entry.data["slave_id"]
-    prefix = entry.options.get(CONF_PREFIX, entry.data.get(CONF_PREFIX, DEFAULT_PREFIX))
-    polling_interval = entry.options.get(
-        "polling_interval", entry.data.get("polling_interval", 30)
-    )
+    prefix = entry.options.get(CONF_PREFIX, DEFAULT_PREFIX)
+    polling_interval = entry.options.get("polling_interval", 30)
 
     client = NextEnergyModbusClient(host, port, slave_id)
     coordinator = NextEnergyDataCoordinator(hass, client, polling_interval, prefix)
