@@ -3,7 +3,42 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST, CONF_PORT
 
-from .const import DOMAIN, DEFAULT_POLLING_INTERVAL, CONF_POLLING_INTERVAL, CONF_PREFIX, DEFAULT_PREFIX
+from .const import (
+    DOMAIN,
+    DEFAULT_POLLING_INTERVAL,
+    CONF_POLLING_INTERVAL,
+    CONF_PREFIX,
+    DEFAULT_PREFIX,
+    CONF_SLAVE_ID,
+)
+
+DATA_SCHEMA = vol.Schema(
+    {
+        vol.Required(CONF_HOST): str,
+        vol.Required(CONF_PORT, default=502): int,
+        vol.Required(CONF_SLAVE_ID, default=1): int,
+        vol.Required(
+            CONF_POLLING_INTERVAL, default=DEFAULT_POLLING_INTERVAL
+        ): int,
+        vol.Required(CONF_PREFIX, default=DEFAULT_PREFIX): str,
+    }
+)
+
+
+def options_schema(options: dict) -> vol.Schema:
+    """Return a schema for the options flow."""
+    return vol.Schema(
+        {
+            vol.Optional(
+                CONF_POLLING_INTERVAL,
+                default=options.get(CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL),
+            ): int,
+            vol.Optional(
+                CONF_PREFIX,
+                default=options.get(CONF_PREFIX, DEFAULT_PREFIX),
+            ): str,
+        }
+    )
 
 
 class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
@@ -18,22 +53,9 @@ class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
 
-        options_schema = vol.Schema(
-            {
-                vol.Optional(
-                    CONF_POLLING_INTERVAL,
-                    default=self.config_entry.options.get(
-                        CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL
-                    ),
-                ): int,
-                vol.Optional(
-                    CONF_PREFIX,
-                    default=self.config_entry.options.get(CONF_PREFIX, DEFAULT_PREFIX),
-                ): str,
-            }
+        return self.async_show_form(
+            step_id="init", data_schema=options_schema(self.config_entry.options)
         )
-
-        return self.async_show_form(step_id="init", data_schema=options_schema)
 
 
 class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -57,7 +79,7 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data = {
                 CONF_HOST: user_input[CONF_HOST],
                 CONF_PORT: user_input[CONF_PORT],
-                "slave_id": user_input["slave_id"],
+                CONF_SLAVE_ID: user_input[CONF_SLAVE_ID],
             }
             options = {
                 CONF_POLLING_INTERVAL: user_input[CONF_POLLING_INTERVAL],
@@ -68,20 +90,8 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 title=user_input[CONF_HOST], data=data, options=options
             )
 
-        data_schema = vol.Schema(
-            {
-                vol.Required(CONF_HOST): str,
-                vol.Required(CONF_PORT, default=502): int,
-                vol.Required("slave_id", default=1): int,
-                vol.Required(
-                    CONF_POLLING_INTERVAL, default=DEFAULT_POLLING_INTERVAL
-                ): int,
-                vol.Required(CONF_PREFIX, default=DEFAULT_PREFIX): str,
-            }
-        )
-
         return self.async_show_form(
             step_id="user",
-            data_schema=data_schema,
+            data_schema=DATA_SCHEMA,
             errors=errors,
         )
