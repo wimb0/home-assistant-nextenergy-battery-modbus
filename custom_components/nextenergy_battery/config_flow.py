@@ -71,6 +71,7 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(
                     CONF_POLLING_INTERVAL, default=DEFAULT_POLLING_INTERVAL
                 ): int,
+                vol.Required(CONF_PREFIX, default=DEFAULT_PREFIX): str,
             }
         )
 

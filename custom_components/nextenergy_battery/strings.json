@@ -8,7 +8,8 @@
                 "data": {
                     "host": "Host",
                     "port": "Port",
-                    "slave_id": "Slave ID"
+                    "slave_id": "Slave ID",
+                    "prefix": "Prefix for sensor names"
                 }
             }
         },

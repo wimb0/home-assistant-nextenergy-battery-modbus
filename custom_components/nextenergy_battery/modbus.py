@@ -67,8 +67,10 @@ class NextEnergyModbusClient:
             if raw_value >= 0x8000:
                 raw_value -= 0x10000
         elif count == 2:
-            # Handle unsigned 32-bit integers (adjust if signed is needed)
+            # Handle signed 32-bit integers
             raw_value = (registers[0] << 16) | registers[1]
+            if raw_value >= 0x80000000:
+                raw_value -= 0x100000000
         else:
             # For other counts, return raw list for now
             return registers
