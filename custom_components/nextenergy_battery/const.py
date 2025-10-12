@@ -17,7 +17,7 @@ from homeassistant.helpers.entity import EntityCategory
 
 DOMAIN = "nextenergy_battery"
 MANUFACTURER = "NextEnergy"
-PLATFORMS = ["sensor", "diagnostics", "binary_sensor"]
+PLATFORMS = ["sensor", "binary_sensor"]
 DEFAULT_POLLING_INTERVAL = 30
 CONF_POLLING_INTERVAL = "polling_interval"
 CONF_PREFIX = "prefix"
