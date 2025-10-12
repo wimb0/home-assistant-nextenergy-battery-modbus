@@ -21,10 +21,11 @@ This is a custom integration for Home Assistant to monitor NextEnergy batteries 
 2.  Click **+ Add Integration**.
 3.  Search for "NextEnergy Battery" and select it.
 4.  Enter the Host IP, Port, and Modbus Slave ID of your battery.
+5.  (Optional) Enter a prefix for the sensor names. The default is `nextenergy`.
 
 ## Sensors
 
-The integration creates a device with a number of sensors to monitor your battery system. Many less-critical sensors are disabled by default but can be enabled from the device page.
+The integration creates a device with a number of sensors to monitor your battery system. The entity IDs of the sensors will be prefixed with the value you provided during configuration (e.g. `sensor.nextenergy_system_soc`). Many less-critical sensors are disabled by default but can be enabled from the device page.
 
 #### Key Metrics
 - **System SoC:** Overall State of Charge of the system.

@@ -15,7 +15,7 @@ from homeassistant.const import (
     UnitOfPower,
 )
 
-from .const import DOMAIN, SENSORS, DISABLED_BY_DEFAULT, CONF_PREFIX, DEFAULT_PREFIX
+from .const import DOMAIN, SENSORS, DISABLED_BY_DEFAULT
 from .coordinator import NextEnergyDataCoordinator
 
 
@@ -26,7 +26,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up the sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id]
-    prefix = entry.data.get(CONF_PREFIX, DEFAULT_PREFIX)
+    prefix = coordinator.prefix
 
     entity_descriptions = []
     for key, (name, _, _, unit, device_class, state_class, _, _) in SENSORS.items():

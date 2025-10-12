@@ -3,7 +3,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST, CONF_PORT
 
-from .const import DOMAIN, DEFAULT_POLLING_INTERVAL, CONF_POLLING_INTERVAL
+from .const import DOMAIN, DEFAULT_POLLING_INTERVAL, CONF_POLLING_INTERVAL, CONF_PREFIX, DEFAULT_PREFIX
 
 
 class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
@@ -26,6 +26,10 @@ class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
                         CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL
                     ),
                 ): int,
+                vol.Optional(
+                    CONF_PREFIX,
+                    default=self.config_entry.options.get(CONF_PREFIX, DEFAULT_PREFIX),
+                ): str,
             }
         )
 
@@ -57,6 +61,7 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             }
             options = {
                 CONF_POLLING_INTERVAL: user_input[CONF_POLLING_INTERVAL],
+                CONF_PREFIX: user_input[CONF_PREFIX],
             }
 
             return self.async_create_entry(
