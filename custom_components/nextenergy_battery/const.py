@@ -1,5 +1,3 @@
-# In custom_components/nextenergy_battery/const.py
-
 """Constants for the NextEnergy Battery integration."""
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -15,6 +13,7 @@ from homeassistant.const import (
 )
 
 DOMAIN = "nextenergy_battery"
+MANUFACTURER = "NextEnergy"
 PLATFORMS = ["sensor"]
 DEFAULT_POLLING_INTERVAL = 30
 CONF_POLLING_INTERVAL = "polling_interval"
@@ -87,33 +86,12 @@ DYNAMIC_SENSORS = {
 SENSORS = {**STATIC_SENSORS, **DYNAMIC_SENSORS}
 
 DISABLED_BY_DEFAULT = [
-    "serial_number",
-    "master_version",
-    "bms_master_version",
-    "bms_master_sn",
-    "bms_slave_1_version",
-    "bms_slave_1_sn",
-    "bms_slave_2_version",
-    "bms_slave_2_sn",
-    "bms_slave_3_version",
-    "bms_slave_3_sn",
-    "bms_slave_4_version",
-    "bms_slave_4_sn",
-    "bms_slave_5_version",
-    "bms_slave_5_sn",
-    "bms_connection_status",
-    "meter_connection_status",
-    "r_phase_voltage",
-    "s_phase_voltage",
-    "t_phase_voltage",
-    "r_phase_current",
-    "s_phase_current",
-    "t_phase_current",
-    "grid_r_voltage",
-    "grid_s_voltage",
-    "grid_t_voltage",
-    "rated_power",
-    "max_active_power",
-    "eps_power",
-    "reactive_power",
+    "serial_number", "master_version", "bms_master_version", "bms_master_sn",
+    "bms_slave_1_version", "bms_slave_1_sn", "bms_slave_2_version", "bms_slave_2_sn",
+    "bms_slave_3_version", "bms_slave_3_sn", "bms_slave_4_version", "bms_slave_4_sn",
+    "bms_slave_5_version", "bms_slave_5_sn", "bms_connection_status",
+    "meter_connection_status", "r_phase_voltage", "s_phase_voltage",
+    "t_phase_voltage", "r_phase_current", "s_phase_current", "t_phase_current",
+    "grid_r_voltage", "grid_s_voltage", "grid_t_voltage", "rated_power",
+    "max_active_power", "eps_power", "reactive_power",
 ]
