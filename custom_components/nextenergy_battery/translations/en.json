@@ -18,8 +18,7 @@
             "unknown": "An unknown error occurred."
         },
         "abort": {
-            "already_configured": "This NextEnergy Battery is already configured.",
-            "reconfigure_successful": "Re-configuration successful! The integration will now reload."
+            "already_configured": "This NextEnergy Battery is already configured."
         }
     },
     "options": {
@@ -34,6 +33,9 @@
                     "polling_interval": "Polling Interval (seconds)"
                 }
             }
+        },
+        "abort": {
+            "reconfigure_successful": "Re-configuration successful! The integration will now reload."
         }
     }
 }
