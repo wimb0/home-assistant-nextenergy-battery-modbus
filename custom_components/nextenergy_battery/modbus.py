@@ -17,16 +17,16 @@ class NextEnergyModbusClient:
         self._host = host
         self._port = port
         self._slave_id = slave_id
-        self._client = ModbusTcpClient(host=host, port=port, timeout=5, retries=3)
+        self._client = ModbusTcpClient(host=host, port=port, timeout=5)
 
     def connect(self):
         """Connect to the Modbus device."""
-        _LOGGER.info(f"Connecting to Modbus device at {self._host}:{self._port}")
+        _LOGGER.debug(f"Connecting to Modbus device at {self._host}:{self._port}")
         return self._client.connect()
 
     def close(self):
         """Close the connection to the Modbus device."""
-        _LOGGER.info("Closing connection to Modbus device.")
+        _LOGGER.debug("Closing connection to Modbus device.")
         self._client.close()
 
     def read_sensor(self, sensor_key):
@@ -42,7 +42,6 @@ class NextEnergyModbusClient:
 
         registers = result.registers
 
-        # Special handling for version sensors
         if sensor_key in [
             "master_version",
             "bms_master_version",
@@ -81,40 +80,41 @@ class NextEnergyModbusClient:
     def read_all_sensors(self):
         """Read all sensor values from the Modbus device with retry logic."""
         max_retries = 3
-        retry_delay = 1  # seconds
+        retry_delay = 1 
 
         for attempt in range(max_retries):
             try:
+                self.connect()
                 if not self._client.is_socket_open():
-                    _LOGGER.debug("Socket is not open, attempting to connect.")
-                    if not self.connect():
-                        _LOGGER.warning("Failed to connect to Modbus device on attempt %s.", attempt + 1)
-                        if attempt < max_retries - 1:
-                            time.sleep(retry_delay)
-                            continue
-                        raise ConnectionException(f"Failed to connect to {self._host}:{self._port} after multiple retries")
+                    _LOGGER.warning("Failed to connect to Modbus device on attempt %s.", attempt + 1)
+                    if attempt < max_retries - 1:
+                        time.sleep(retry_delay)
+                        continue
+                    raise ConnectionException(f"Failed to connect to {self._host}:{self._port} after multiple retries")
 
                 data = {}
                 for sensor_key in SENSORS:
                     data[sensor_key] = self.read_sensor(sensor_key)
-                return data  # Return data on success
+                
+                return data
 
             except (ConnectionException, ModbusIOException, BrokenPipeError) as e:
                 _LOGGER.warning(
                     "Connection error on attempt %s/%s: %s. Retrying in %s seconds...",
-                    attempt + 1,
-                    max_retries,
-                    e,
-                    retry_delay,
+                    attempt + 1, max_retries, e, retry_delay
                 )
-                self.close()  # Close the broken connection before retrying
                 if attempt < max_retries - 1:
                     time.sleep(retry_delay)
                 else:
                     _LOGGER.error("Failed to read sensors after %s retries.", max_retries)
-                    raise  # Re-raise the exception if all retries fail
+                    raise
+
             except Exception as e:
                 _LOGGER.error("An unexpected error occurred while reading sensors: %s", e)
-                return {}  # Return empty data to prevent HA from crashing on unexpected errors
+                return {
 
-        return {}  # Return empty data if all retries fail
+            finally:
+                if self._client.is_socket_open():
+                    self.close()
+
+        return {}
