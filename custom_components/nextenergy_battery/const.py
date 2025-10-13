@@ -11,6 +11,7 @@ from homeassistant.const import (
     UnitOfElectricPotential,
     UnitOfFrequency,
     ELECTRIC_POTENTIAL_MILLIVOLT,
+    POWER_FACTOR,
 )
 
 DOMAIN = "nextenergy_battery"
@@ -109,6 +110,8 @@ DYNAMIC_SENSORS = {
     "alarm_1": ("Alarm Status 1", 39067, 1, None, None, None, False, 1),
     "alarm_2": ("Alarm Status 2", 39068, 1, None, None, None, False, 1),
     "alarm_3": ("Alarm Status 3", 39069, 1, None, None, None, False, 1),
+    "power_factor": ("Power Factor", 39138, 0.001, POWER_FACTOR, SensorDeviceClass.POWER_FACTOR, SensorStateClass.MEASUREMENT, False, 1),
+    "total_load_power": ("Total Load Power", 39629, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2),
 }
 
 SENSORS = {**STATIC_SENSORS, **DYNAMIC_SENSORS}
@@ -124,4 +127,5 @@ DISABLED_BY_DEFAULT = [
     "max_active_power", "eps_power", "reactive_power", "bms_fcc_capacity", "bms_design_energy",
     "bms_max_temp", "bms_min_temp", "bms_max_cell_voltage", "bms_min_cell_voltage",
     "alarm_1", "alarm_2", "alarm_3", "inverter_status_1", "inverter_status_3",
+    "power_factor", "total_load_power",
 ]
