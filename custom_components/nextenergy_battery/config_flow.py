@@ -11,6 +11,7 @@ from .const import (
     CONF_PREFIX,
     DEFAULT_PREFIX,
     CONF_SLAVE_ID,
+    MANUFACTURER,
 )
 
 class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -32,7 +33,6 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(user_input[CONF_HOST])
             self._abort_if_unique_id_configured()
 
-            # Split data for core entry data and user-configurable options
             data = {
                 CONF_HOST: user_input[CONF_HOST],
                 CONF_PORT: user_input[CONF_PORT],
@@ -43,11 +43,11 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_PREFIX: user_input[CONF_PREFIX],
             }
 
+            title = f"{MANUFACTURER} ({user_input[CONF_HOST]})"
             return self.async_create_entry(
-                title=user_input[CONF_HOST], data=data, options=options
+                title=title, data=data, options=options
             )
 
-        # Show the initial form
         data_schema = vol.Schema({
             vol.Required(CONF_HOST): str,
             vol.Required(CONF_PORT, default=502): int,
@@ -72,26 +72,26 @@ class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
     async def async_step_init(self, user_input=None):
         """Manage the options."""
         if user_input is not None:
-            # Update the core connection data
             new_data = {
                 CONF_HOST: user_input[CONF_HOST],
                 CONF_PORT: user_input[CONF_PORT],
                 CONF_SLAVE_ID: user_input[CONF_SLAVE_ID],
             }
             
-            # Update the options, but preserve the original prefix
             new_options = {
                 CONF_POLLING_INTERVAL: user_input[CONF_POLLING_INTERVAL],
                 CONF_PREFIX: self.config_entry.options.get(CONF_PREFIX),
             }
             
-            # Update the entry and trigger the reload via the update listener
+            new_title = f"{MANUFACTURER} ({user_input[CONF_HOST]})"
             self.hass.config_entries.async_update_entry(
-                self.config_entry, data=new_data, options=new_options
+                self.config_entry,
+                title=new_title,
+                data=new_data,
+                options=new_options
             )
             return self.async_abort(reason="reconfigure_successful")
 
-        # Populate the options form with the current values, excluding the prefix
         data = self.config_entry.data
         options = self.config_entry.options
         
