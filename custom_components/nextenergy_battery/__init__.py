@@ -45,7 +45,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     client = NextEnergyModbusClient(host, port, slave_id)
     coordinator = NextEnergyDataCoordinator(hass, client, polling_interval, prefix)
 
-    # Lees eenmalig de statische data in
     try:
         static_data = await hass.async_add_executor_job(
             client.read_sensors, STATIC_SENSORS.keys()
@@ -62,7 +61,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         raise ConfigEntryNotReady(f"Failed to fetch static data from battery: {e}") from e
 
 
-    # Doe de eerste refresh voor dynamische data
     await coordinator.async_config_entry_first_refresh()
 
     hass.data[DOMAIN][entry.entry_id] = coordinator
