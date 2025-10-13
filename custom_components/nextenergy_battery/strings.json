@@ -1,4 +1,3 @@
-
 {
     "config": {
         "step": {
@@ -9,7 +8,8 @@
                     "host": "Host",
                     "port": "Port",
                     "slave_id": "Slave ID",
-                    "prefix": "Prefix for sensor names"
+                    "prefix": "Prefix for sensor names",
+                    "polling_interval": "Polling Interval (seconds)"
                 }
             }
         },
@@ -18,7 +18,22 @@
             "unknown": "An unknown error occurred."
         },
         "abort": {
-            "already_configured": "This NextEnergy Battery is already configured."
+            "already_configured": "This NextEnergy Battery is already configured.",
+            "reconfigure_successful": "Re-configuration successful! The integration will now reload."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "NextEnergy Battery Options",
+                "description": "You can change connection settings here. The integration will reload after submitting.",
+                "data": {
+                    "host": "Host",
+                    "port": "Port",
+                    "slave_id": "Slave ID",
+                    "polling_interval": "Polling Interval (seconds)"
+                }
+            }
         }
     }
 }

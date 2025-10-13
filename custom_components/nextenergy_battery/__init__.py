@@ -1,8 +1,11 @@
+# In custom_components/nextenergy_battery/__init__.py
+
 """The NextEnergy Battery integration."""
 import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryNotReady
 import homeassistant.helpers.config_validation as cv
 
 from .const import (
@@ -13,6 +16,7 @@ from .const import (
     CONF_SLAVE_ID,
     CONF_POLLING_INTERVAL,
     DEFAULT_POLLING_INTERVAL,
+    STATIC_SENSORS,
 )
 from .modbus import NextEnergyModbusClient
 from .coordinator import NextEnergyDataCoordinator
@@ -35,16 +39,30 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     host = entry.data["host"]
     port = entry.data["port"]
     slave_id = entry.data[CONF_SLAVE_ID]
-    prefix = entry.options.get(CONF_PREFIX, DEFAULT_PREFIX)
-    if not prefix:
-        prefix = DEFAULT_PREFIX
-    polling_interval = entry.options.get(
-        CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL
-    )
+    prefix = entry.options.get(CONF_PREFIX, DEFAULT_PREFIX) or DEFAULT_PREFIX
+    polling_interval = entry.options.get(CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL)
 
     client = NextEnergyModbusClient(host, port, slave_id)
     coordinator = NextEnergyDataCoordinator(hass, client, polling_interval, prefix)
 
+    # Lees eenmalig de statische data in
+    try:
+        static_data = await hass.async_add_executor_job(
+            client.read_sensors, STATIC_SENSORS.keys()
+        )
+        if not static_data:
+            _LOGGER.error("Could not read static data from battery, integration will not start.")
+            raise ConfigEntryNotReady("Failed to read static sensor data")
+        
+        coordinator.static_data = static_data
+        _LOGGER.debug(f"Successfully fetched static data: {static_data}")
+
+    except Exception as e:
+        _LOGGER.error("Error fetching static data: %s", e)
+        raise ConfigEntryNotReady(f"Failed to fetch static data from battery: {e}") from e
+
+
+    # Doe de eerste refresh voor dynamische data
     await coordinator.async_config_entry_first_refresh()
 
     hass.data[DOMAIN][entry.entry_id] = coordinator
@@ -69,5 +87,5 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 async def update_listener(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Handle options update."""
-    _LOGGER.info("Updating NextEnergy Battery integration.")
+    _LOGGER.info("Updating NextEnergy Battery integration options.")
     await hass.config_entries.async_reload(entry.entry_id)

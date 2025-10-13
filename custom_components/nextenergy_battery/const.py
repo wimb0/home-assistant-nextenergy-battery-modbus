@@ -1,3 +1,5 @@
+# In custom_components/nextenergy_battery/const.py
+
 """Constants for the NextEnergy Battery integration."""
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -20,14 +22,12 @@ CONF_PREFIX = "prefix"
 DEFAULT_PREFIX = "nextenergy"
 CONF_SLAVE_ID = "slave_id"
 
-# Defines the structure of a sensor, including its name, register, scale, unit, device class, state class,
-# whether it's a string, and the number of registers it occupies.
+# Defines the structure of a sensor
 # (name, register, scale, unit, device_class, state_class, is_string, register_count)
-SENSORS = {
+STATIC_SENSORS = {
     "model_name": ("Model Name", 30000, 1, None, None, None, True, 8),
     "serial_number": ("Serial Number", 30016, 1, None, None, None, True, 16),
     "master_version": ("Master Version", 36001, 1, None, None, None, False, 1),
-    "bms_connection_status": ("BMS Connection Status", 37002, 1, None, None, None, False, 1),
     "bms_master_version": ("BMS Master Version", 37003, 1, None, None, None, False, 1),
     "bms_master_sn": ("BMS Master Serial Number", 37005, 1, None, None, None, True, 16),
     "bms_slave_number": ("BMS Slave Number", 37032, 1, None, None, None, False, 1),
@@ -41,6 +41,12 @@ SENSORS = {
     "bms_slave_3_sn": ("BMS Slave 3 SN", 37129, 1, None, None, None, True, 16),
     "bms_slave_4_sn": ("BMS Slave 4 SN", 37145, 1, None, None, None, True, 16),
     "bms_slave_5_sn": ("BMS Slave 5 SN", 37161, 1, None, None, None, True, 16),
+    "rated_power": ("Rated Power (Pn)", 39053, 0.001, UnitOfPower.KILO_WATT, SensorDeviceClass.POWER, None, False, 2),
+    "max_active_power": ("Max Active Power (Pmax)", 39055, 0.001, UnitOfPower.KILO_WATT, SensorDeviceClass.POWER, None, False, 2),
+}
+
+DYNAMIC_SENSORS = {
+    "bms_connection_status": ("BMS Connection Status", 37002, 1, None, None, None, False, 1),
     "bms_voltage": ("BMS Voltage", 37609, 0.1, UnitOfElectricPotential.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 1),
     "bms_current": ("BMS Current", 37610, 0.1, UnitOfElectricCurrent.AMPERE, SensorDeviceClass.CURRENT, SensorStateClass.MEASUREMENT, False, 1),
     "bms_ambient_temp": ("BMS Ambient Temp", 37611, 0.1, UnitOfTemperature.CELSIUS, SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, False, 1),
@@ -55,8 +61,6 @@ SENSORS = {
     "s_phase_current": ("S Phase Current", 38810, 0.001, UnitOfElectricCurrent.AMPERE, SensorDeviceClass.CURRENT, SensorStateClass.MEASUREMENT, False, 2),
     "t_phase_current": ("T Phase Current", 38812, 0.001, UnitOfElectricCurrent.AMPERE, SensorDeviceClass.CURRENT, SensorStateClass.MEASUREMENT, False, 2),
     "combined_active_power": ("Combined Active Power", 38814, 0.1, UnitOfPower.WATT, SensorDeviceClass.POWER, SensorStateClass.MEASUREMENT, False, 2),
-    "rated_power": ("Rated Power (Pn)", 39053, 0.001, UnitOfPower.KILO_WATT, SensorDeviceClass.POWER, None, False, 2),
-    "max_active_power": ("Max Active Power (Pmax)", 39055, 0.001, UnitOfPower.KILO_WATT, SensorDeviceClass.POWER, None, False, 2),
     "status": ("Status", 39063, 1, None, None, None, False, 1),
     "grid_r_voltage": ("Grid R Voltage", 39123, 0.1, UnitOfElectricPotential.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 1),
     "grid_s_voltage": ("Grid S Voltage", 39124, 0.1, UnitOfElectricPotential.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 1),
@@ -79,6 +83,8 @@ SENSORS = {
     "grid_import_total": ("Grid Import Total", 39617, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2),
     "grid_import_today": ("Grid Import Today", 39619, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2),
 }
+
+SENSORS = {**STATIC_SENSORS, **DYNAMIC_SENSORS}
 
 DISABLED_BY_DEFAULT = [
     "serial_number",

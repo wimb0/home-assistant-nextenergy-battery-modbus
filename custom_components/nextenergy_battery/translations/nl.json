@@ -3,12 +3,13 @@
         "step": {
             "user": {
                 "title": "NextEnergy Batterij",
-                "description": "Stel je NextEnergy Batterij in om te integreren met Home Assistant.",
+                "description": "Stel de NextEnergy Batterij in om te integreren met Home Assistant.",
                 "data": {
                     "host": "Host",
                     "port": "Poort",
                     "slave_id": "Slave ID",
-                    "prefix": "Voorvoegsel voor sensor namen"
+                    "prefix": "Voorvoegsel voor sensor namen",
+                    "polling_interval": "Pollingsinterval (seconden)"
                 }
             }
         },
@@ -17,7 +18,22 @@
             "unknown": "Er is een onbekende fout opgetreden."
         },
         "abort": {
-            "already_configured": "Deze NextEnergy Batterij is al geconfigureerd."
+            "already_configured": "Deze NextEnergy Batterij is al geconfigureerd.",
+            "reconfigure_successful": "Herconfiguratie geslaagd! De integratie wordt nu herladen."
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "NextEnergy Batterij Opties",
+                "description": "Je kunt hier de verbindingsinstellingen aanpassen. De integratie wordt herladen na het opslaan.",
+                "data": {
+                    "host": "Host",
+                    "port": "Poort",
+                    "slave_id": "Slave ID",
+                    "polling_interval": "Pollingsinterval (seconden)"
+                }
+            }
         }
     }
 }
