@@ -10,7 +10,7 @@ from homeassistant.const import (
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
     UnitOfFrequency,
-    POWER_FACTOR,
+    UnitOfReactivePower,  # <-- Correcte import
 )
 
 DOMAIN = "nextenergy_battery"
@@ -86,7 +86,7 @@ DYNAMIC_SENSORS = {
     "grid_s_voltage": ("Grid S Voltage", 39124, 0.1, UnitOfElectricPotential.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 1),
     "grid_t_voltage": ("Grid T Voltage", 39125, 0.1, UnitOfElectricPotential.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 1),
     "active_power": ("Active Power", 39134, 0.001, UnitOfPower.KILO_WATT, SensorDeviceClass.POWER, SensorStateClass.MEASUREMENT, False, 2),
-    "reactive_power": ("Reactive Power", 39136, 0.001, "kVar", SensorDeviceClass.REACTIVE_POWER, SensorStateClass.MEASUREMENT, False, 2),
+    "reactive_power": ("Reactive Power", 39136, 0.001, UnitOfReactivePower.KILO_VOLT_AMPERE_REACTIVE, SensorDeviceClass.REACTIVE_POWER, SensorStateClass.MEASUREMENT, False, 2),
     "grid_frequency": ("Grid Frequency", 39139, 0.01, UnitOfFrequency.HERTZ, SensorDeviceClass.FREQUENCY, SensorStateClass.MEASUREMENT, False, 1),
     "inverter_temp": ("Inverter Temp", 39141, 0.1, UnitOfTemperature.CELSIUS, SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, False, 1),
     "grid_power_meter": ("Grid Power (Meter)", 39168, 1, UnitOfPower.WATT, SensorDeviceClass.POWER, SensorStateClass.MEASUREMENT, False, 2),
@@ -104,13 +104,12 @@ DYNAMIC_SENSORS = {
     "grid_import_today": ("Grid Import Today", 39619, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2),
     "bms_max_temp": ("BMS Max Temp", 37617, 0.1, UnitOfTemperature.CELSIUS, SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, False, 1),
     "bms_min_temp": ("BMS Min Temp", 37618, 0.1, UnitOfTemperature.CELSIUS, SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT, False, 1),
-    # --- DIT IS DE WIJZIGING ---
     "bms_max_cell_voltage": ("BMS Max Cell Voltage", 37619, 1, UnitOfElectricPotential.MILLIVOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 1),
     "bms_min_cell_voltage": ("BMS Min Cell Voltage", 37620, 1, UnitOfElectricPotential.MILLIVOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 1),
     "alarm_1": ("Alarm Status 1", 39067, 1, None, None, None, False, 1),
     "alarm_2": ("Alarm Status 2", 39068, 1, None, None, None, False, 1),
     "alarm_3": ("Alarm Status 3", 39069, 1, None, None, None, False, 1),
-    "power_factor": ("Power Factor", 39138, 0.001, POWER_FACTOR, SensorDeviceClass.POWER_FACTOR, SensorStateClass.MEASUREMENT, False, 1),
+    "power_factor": ("Power Factor", 39138, 0.001, None, SensorDeviceClass.POWER_FACTOR, SensorStateClass.MEASUREMENT, False, 1),
     "total_load_power": ("Total Load Power", 39629, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2),
 }
 
