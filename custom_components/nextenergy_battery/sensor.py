@@ -11,11 +11,9 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.const import (
-    UnitOfPower,
-)
+from homeassistant.const import UnitOfPower
 
-from .const import DOMAIN, SENSORS, DISABLED_BY_DEFAULT
+from .const import DOMAIN, SENSORS, DISABLED_BY_DEFAULT, MANUFACTURER
 from .coordinator import NextEnergyDataCoordinator
 
 
@@ -94,8 +92,8 @@ class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntit
         self._attr_unique_id = f"{coordinator.config_entry.entry_id}_{entity_description.key}"
         self._attr_device_info = {
             "identifiers": {(DOMAIN, coordinator.config_entry.entry_id)},
-            "name": "NextEnergy Battery",
-            "manufacturer": "NextEnergy",
+            "name": f"{MANUFACTURER} Battery",
+            "manufacturer": MANUFACTURER,
             "model": coordinator.data.get("model_name"),
             "sw_version": coordinator.data.get("master_version"),
             "serial_number": coordinator.data.get("serial_number"),
