@@ -35,7 +35,7 @@ class NextEnergyModbusClient:
 
         _LOGGER.debug(f"Reading sensor {name} from address {address} with count {count}")
         
-        result = self._client.read_holding_registers(address=address, count=count, slave=self._slave_id)
+        result = self._client.read_holding_registers(address=address, count=count, device_id=self._slave_id)
         if result.isError():
             _LOGGER.debug(f"Error reading sensor {name}: {result}")
             return None
@@ -81,7 +81,7 @@ class NextEnergyModbusClient:
     def read_all_sensors(self):
         """Read all sensor values from the Modbus device with retry logic."""
         max_retries = 3
-        retry_delay = 5  # seconds
+        retry_delay = 1  # seconds
 
         for attempt in range(max_retries):
             try:
