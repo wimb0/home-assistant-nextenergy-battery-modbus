@@ -10,9 +10,21 @@
 
 This is a custom integration for Home Assistant to monitor NextEnergy batteries via Modbus TCP.
 
+The battery is a Fox ESS MQ2200-M-AC and the expansion batteries are Fox ESS MQ2200-M-S.
+
+Implements Fox ESS Modbus registers from [`FoxESS Modbus Protocol--20250115 (V1.05.03.00)(1).pdf`](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/FoxESS%20Modbus%20Protocol--20250115%20(V1.05.03.00)(1).pdf).
+
+<img src="images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Batterij Master Unit" width="50%">
+
 ## Installation
 
-1.  **HACS:** Add this repository as a custom repository in HACS. Search for "NextEnergy Battery" and install the integration.
+1.  **HACS (Custom Repository):**
+    * In Home Assistant, navigate to **HACS**.
+    * Click the three dots menu (top right) and select **Custom repositories**.
+    * Enter the repository URL: `https://github.com/wimb0/home-assistant-nextenergy-battery-modbus`.
+    * Select **Integration** as the Category.
+    * Click **ADD**.
+    * Then, go to the **Integrations** section in HACS, search for **"NextEnergy Battery"** and install the integration.
 2.  **Manual:** Copy the `custom_components/nextenergy_battery` directory to your Home Assistant `custom_components` directory.
 3.  Restart Home Assistant.
 
@@ -74,7 +86,8 @@ The following sensors are disabled by default and can be enabled manually if nee
 
 ![NextEnergy Logo](images/nextenergy_battery/logo.png)
 
-<!-- Badges -->
+<img src="images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Batterij Master Unit" width="50%"><img src="images/nextenergy_battery/Plug-in_Uitbreiding.png" alt="NextEnergy Batterij Master Unit" width="50%">
+
 [hacs-url]: https://github.com/hacs/integration
 [hacs-badge]: https://img.shields.io/badge/hacs-default-orange.svg?style=for-the-badge
 [release-badge]: https://img.shields.io/github/v/release/wimb0/home-assistant-nextenergy-battery-modbus?style=for-the-badge
@@ -83,8 +96,6 @@ The following sensors are disabled by default and can be enabled manually if nee
 [lic-badge]: https://img.shields.io/github/license/wimb0/home-assistant-nextenergy-battery-modbus?style=for-the-badge
 [buymecoffeeurl]: https://www.buymeacoffee.com/wimbo
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
-<!-- References -->
-
 [home-assistant]: https://www.home-assistant.io/
 [hacs]: https://hacs.xyz
 [release-url]: https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/releases
