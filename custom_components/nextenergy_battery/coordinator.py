@@ -1,10 +1,12 @@
+# In custom_components/nextenergy_battery/coordinator.py
+
 """Data coordinator for the NextEnergy Battery integration."""
 import logging
 from datetime import timedelta
 
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .const import DOMAIN
+from .const import DOMAIN, DYNAMIC_SENSORS
 from .modbus import NextEnergyModbusClient
 
 _LOGGER = logging.getLogger(__name__)
@@ -23,6 +25,7 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator):
         """Initialize."""
         self.client = client
         self.prefix = prefix
+        self.static_data = {}  # Opslag voor statische data
         super().__init__(
             hass,
             _LOGGER,
@@ -31,35 +34,27 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator):
         )
 
     async def _async_update_data(self):
-        """Fetch data from the inverter.
+        """Fetch dynamic data from the inverter."""
+        dynamic_data = await self.hass.async_add_executor_job(
+            self.client.read_sensors, DYNAMIC_SENSORS.keys()
+        )
 
-        This is the place to pre-process the data to lookup tables
-        so entities can quickly look up their data.
-        """
-        data = await self.hass.async_add_executor_job(self.client.read_all_sensors)
+        # Combineer statische en dynamische data
+        data = {**self.static_data, **dynamic_data}
 
-        # Split battery power into charging and discharging
-        if data and "battery_power" in data and data["battery_power"] is not None:
+        # Verwerk de gecombineerde data
+        if "battery_power" in data and data["battery_power"] is not None:
             battery_power = data["battery_power"]
-            if battery_power > 0:
-                data["battery_charging"] = battery_power
-                data["battery_discharging"] = 0
-            else:
-                data["battery_charging"] = 0
-                data["battery_discharging"] = abs(battery_power)
+            data["battery_charging"] = battery_power if battery_power > 0 else 0
+            data["battery_discharging"] = abs(battery_power) if battery_power < 0 else 0
         else:
             data["battery_charging"] = None
             data["battery_discharging"] = None
 
-        # Split grid power into import and export
-        if data and "grid_power_meter" in data and data["grid_power_meter"] is not None:
+        if "grid_power_meter" in data and data["grid_power_meter"] is not None:
             grid_power = data["grid_power_meter"]
-            if grid_power > 0:
-                data["grid_import"] = grid_power
-                data["grid_export"] = 0
-            else:
-                data["grid_import"] = 0
-                data["grid_export"] = abs(grid_power)
+            data["grid_import"] = grid_power if grid_power > 0 else 0
+            data["grid_export"] = abs(grid_power) if grid_power < 0 else 0
         else:
             data["grid_import"] = None
             data["grid_export"] = None
