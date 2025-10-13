@@ -3,7 +3,7 @@
         "step": {
             "user": {
                 "title": "NextEnergy Batterij",
-                "description": "Stel je NextEnergy Batterij in om te integreren met Home Assistant.",
+                "description": "Stel de NextEnergy Batterij in om te integreren met Home Assistant.",
                 "data": {
                     "host": "Host",
                     "port": "Poort",
@@ -26,12 +26,11 @@
         "step": {
             "init": {
                 "title": "NextEnergy Batterij Opties",
-                "description": "Je kunt hier alle instellingen aanpassen. De integratie wordt herladen na het opslaan.",
+                "description": "Je kunt hier de verbindingsinstellingen aanpassen. De integratie wordt herladen na het opslaan.",
                 "data": {
                     "host": "Host",
                     "port": "Poort",
                     "slave_id": "Slave ID",
-                    "prefix": "Voorvoegsel voor sensor namen",
                     "polling_interval": "Pollingsinterval (seconden)"
                 }
             }
