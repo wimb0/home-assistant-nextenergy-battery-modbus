@@ -26,12 +26,11 @@
         "step": {
             "init": {
                 "title": "NextEnergy Battery Options",
-                "description": "You can change all configuration settings here. The integration will reload after submitting.",
+                "description": "You can change connection settings here. The integration will reload after submitting.",
                 "data": {
                     "host": "Host",
                     "port": "Port",
                     "slave_id": "Slave ID",
-                    "prefix": "Prefix for sensor names",
                     "polling_interval": "Polling Interval (seconds)"
                 }
             }
