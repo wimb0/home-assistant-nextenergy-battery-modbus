@@ -1,6 +1,9 @@
+# In custom_components/nextenergy_battery/modbus.py
+
 """Modbus communication for NextEnergy Battery."""
 import logging
 import time
+from typing import Dict
 from pymodbus.client import ModbusTcpClient
 from pymodbus.exceptions import ConnectionException, ModbusIOException
 
@@ -29,8 +32,8 @@ class NextEnergyModbusClient:
         _LOGGER.debug("Closing connection to Modbus device.")
         self._client.close()
 
-    def read_sensor(self, sensor_key):
-        """Read a sensor value from the Modbus device."""
+    def _read_sensor_value(self, sensor_key):
+        """Read a single sensor value from the Modbus device."""
         name, address, scale, unit, device_class, state_class, is_string, count = SENSORS[sensor_key]
 
         _LOGGER.debug(f"Reading sensor {name} from address {address} with count {count}")
@@ -42,20 +45,16 @@ class NextEnergyModbusClient:
 
         registers = result.registers
 
+        # Special handling for version sensors
         if sensor_key in [
-            "master_version",
-            "bms_master_version",
-            "bms_slave_1_version",
-            "bms_slave_2_version",
-            "bms_slave_3_version",
-            "bms_slave_4_version",
+            "master_version", "bms_master_version", "bms_slave_1_version",
+            "bms_slave_2_version", "bms_slave_3_version", "bms_slave_4_version",
             "bms_slave_5_version",
         ]:
             value = registers[0]
             return f"{(value >> 8) & 0xF}.{(value >> 4) & 0xF}.{value & 0xF}"
 
         if is_string:
-            # Manual string decoding
             return "".join(
                 chr(registers[i] >> 8) + chr(registers[i] & 0xFF) for i in range(count)
             ).rstrip("\x00")
@@ -63,24 +62,19 @@ class NextEnergyModbusClient:
         raw_value = 0
         if count == 1:
             raw_value = registers[0]
-            # Handle signed 16-bit integers
-            if raw_value >= 0x8000:
-                raw_value -= 0x10000
+            if raw_value >= 0x8000: raw_value -= 0x10000
         elif count == 2:
-            # Handle signed 32-bit integers
             raw_value = (registers[0] << 16) | registers[1]
-            if raw_value >= 0x80000000:
-                raw_value -= 0x100000000
+            if raw_value >= 0x80000000: raw_value -= 0x100000000
         else:
-            # For other counts, return raw list for now
             return registers
 
         return raw_value * scale
 
-    def read_all_sensors(self):
-        """Read all sensor values from the Modbus device with retry logic."""
+    def read_sensors(self, sensor_keys: list) -> Dict:
+        """Read a specific list of sensor values from the Modbus device with retry logic."""
         max_retries = 3
-        retry_delay = 1 
+        retry_delay = 1  # seconds
 
         for attempt in range(max_retries):
             try:
@@ -90,18 +84,18 @@ class NextEnergyModbusClient:
                     if attempt < max_retries - 1:
                         time.sleep(retry_delay)
                         continue
-                    raise ConnectionException(f"Failed to connect to {self._host}:{self._port} after multiple retries")
+                    raise ConnectionException(f"Failed to connect to {self._host}:{self._port} after retries")
 
                 data = {}
-                for sensor_key in SENSORS:
-                    data[sensor_key] = self.read_sensor(sensor_key)
+                for sensor_key in sensor_keys:
+                    data[sensor_key] = self._read_sensor_value(sensor_key)
                 
                 return data
 
             except (ConnectionException, ModbusIOException, BrokenPipeError) as e:
                 _LOGGER.warning(
-                    "Connection error on attempt %s/%s: %s. Retrying in %s seconds...",
-                    attempt + 1, max_retries, e, retry_delay
+                    "Connection error on attempt %s/%s: %s. Retrying...",
+                    attempt + 1, max_retries, e
                 )
                 if attempt < max_retries - 1:
                     time.sleep(retry_delay)
@@ -111,10 +105,9 @@ class NextEnergyModbusClient:
 
             except Exception as e:
                 _LOGGER.error("An unexpected error occurred while reading sensors: %s", e)
-                return {
+                return {}
 
             finally:
                 if self._client.is_socket_open():
                     self.close()
-
         return {}
