@@ -1,5 +1,3 @@
-# In custom_components/nextenergy_battery/modbus.py
-
 """Modbus communication for NextEnergy Battery."""
 import logging
 import time
@@ -62,10 +60,14 @@ class NextEnergyModbusClient:
         raw_value = 0
         if count == 1:
             raw_value = registers[0]
-            if raw_value >= 0x8000: raw_value -= 0x10000
+            # Handle signed 16-bit integers
+            if raw_value >= 0x8000:
+                raw_value -= 0x10000
         elif count == 2:
+            # Handle signed 32-bit integers
             raw_value = (registers[0] << 16) | registers[1]
-            if raw_value >= 0x80000000: raw_value -= 0x100000000
+            if raw_value >= 0x80000000:
+                raw_value -= 0x100000000
         else:
             return registers
 
