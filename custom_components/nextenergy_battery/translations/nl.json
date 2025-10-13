@@ -3,7 +3,7 @@
         "step": {
             "user": {
                 "title": "NextEnergy Batterij",
-                "description": "Stel de NextEnergy Batterij in om te integreren met Home Assistant.",
+                "description": "Stel je NextEnergy Batterij in om te integreren met Home Assistant.",
                 "data": {
                     "host": "Host",
                     "port": "Poort",
@@ -18,8 +18,7 @@
             "unknown": "Er is een onbekende fout opgetreden."
         },
         "abort": {
-            "already_configured": "Deze NextEnergy Batterij is al geconfigureerd.",
-            "reconfigure_successful": "Herconfiguratie geslaagd! De integratie wordt nu herladen."
+            "already_configured": "Deze NextEnergy Batterij is al geconfigureerd."
         }
     },
     "options": {
@@ -34,6 +33,9 @@
                     "polling_interval": "Pollingsinterval (seconden)"
                 }
             }
+        },
+        "abort": {
+            "reconfigure_successful": "Herconfiguratie geslaagd! De integratie wordt nu herladen."
         }
     }
 }
