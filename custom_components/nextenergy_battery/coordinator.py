@@ -11,6 +11,9 @@ from .const import (
     ALARM_2_MESSAGES, 
     ALARM_3_MESSAGES,
     STATUS_1_MESSAGES,
+    WORK_MODE_MESSAGES,
+    SYSTEM_POWER_STATE_MESSAGES,
+    NETWORK_STATUS_MESSAGES,
 )
 from .modbus import NextEnergyModbusClient
 from .util import parse_bitfield_messages
@@ -48,24 +51,25 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator):
         data = {**self.static_data, **dynamic_data}
 
         if data:
-            # Process alarms
+            # Process bitfield alarms and statuses
             data["alarm_1"] = parse_bitfield_messages(data.get("alarm_1"), ALARM_1_MESSAGES)
             data["alarm_2"] = parse_bitfield_messages(data.get("alarm_2"), ALARM_2_MESSAGES)
             data["alarm_3"] = parse_bitfield_messages(data.get("alarm_3"), ALARM_3_MESSAGES)
             
-            # Process statuses
             status1_val = data.get("inverter_status_1")
             data["inverter_status_1"] = parse_bitfield_messages(status1_val, STATUS_1_MESSAGES) if status1_val is not None else "Unknown"
 
             status3_val = data.get("inverter_status_3")
             if status3_val is not None:
-                # Bit 0: 1 = Off-grid, 0 = Not off-grid (On-grid)
-                if (status3_val >> 0) & 1:
-                    data["inverter_status_3"] = "Off-grid"
-                else:
-                    data["inverter_status_3"] = "On-grid"
+                data["inverter_status_3"] = "Off-grid" if (status3_val >> 0) & 1 else "On-grid"
             else:
                 data["inverter_status_3"] = "Unknown"
+
+            # Process simple map-based statuses
+            data["work_mode"] = WORK_MODE_MESSAGES.get(data.get("work_mode"), "Unknown")
+            data["system_power_state"] = SYSTEM_POWER_STATE_MESSAGES.get(data.get("system_power_state"), "Unknown")
+            data["network_status"] = NETWORK_STATUS_MESSAGES.get(data.get("network_status"), "Unknown")
+
 
         # Process combined data
         if "battery_power" in data and data["battery_power"] is not None:
