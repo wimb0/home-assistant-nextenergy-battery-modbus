@@ -1,5 +1,4 @@
 [![release][release-badge]][release-url]
-<!-- ![active][active-badge] -->
 ![downloads][downloads-badge]
 
 [![hacs][hacs-badge]][hacs-url]
