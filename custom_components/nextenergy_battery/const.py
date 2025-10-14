@@ -10,7 +10,7 @@ from homeassistant.const import (
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
     UnitOfFrequency,
-    UnitOfReactivePower,  # <-- Correcte import
+    UnitOfReactivePower,
 )
 
 DOMAIN = "nextenergy_battery"
