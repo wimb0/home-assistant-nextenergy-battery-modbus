@@ -37,9 +37,13 @@ class NextEnergyModbusClient:
         _LOGGER.debug(f"Reading sensor {name} from address {address} with count {count}")
         
         result = self._client.read_holding_registers(address=address, count=count, device_id=self._slave_id)
+        
+        # --- DIT IS DE WIJZIGING ---
+        # Als er een fout is (zoals een verkeerd ID), forceer een nieuwe poging
+        # door een exception op te gooien die de retry-loop activeert.
         if result.isError():
             _LOGGER.debug(f"Error reading sensor {name}: {result}")
-            return None
+            raise ModbusIOException(f"Error reading sensor {name}")
 
         registers = result.registers
 
