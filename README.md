@@ -7,12 +7,13 @@
 
 # Home Assistant NextEnergy Battery Modbus Integration
 
-This is a custom integration for Home Assistant to monitor the [NextEnergy Plug-in battery](https://www.nextenergy.nl/smart-home/plug-in-batterij) via Modbus TCP.
-The battery has Modbus TCP port 502 open on the WiFi and LAN interface.
+This is a custom integration for Home Assistant to monitor the [NextEnergy Plug-in battery](https://www.nextenergy.nl/smart-home/plug-in-batterij) (in Dutch) via Modbus TCP.
+
+The battery has Modbus TCP (port 502) enabled on the WiFi and LAN interface, and is used by this integration to communicate with the battery.
 
 The battery is a Fox ESS MQ2200-M-AC and the expansion batteries are Fox ESS MQ2200-M-S.
 
-Implements Fox ESS Modbus registers from [`FoxESS Modbus Protocol--20250115 (V1.05.03.00)(1).pdf`](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/FoxESS%20Modbus%20Protocol--20250115%20(V1.05.03.00)(1).pdf).
+Currently implements Fox ESS Modbus registers from [`FoxESS Modbus Protocol--20250115 (V1.05.03.00)(1).pdf`](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/FoxESS%20Modbus%20Protocol--20250115%20(V1.05.03.00)(1).pdf).
 
 <img src="https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Battery Master Unit" width="50%">
 
@@ -90,7 +91,8 @@ The following sensors are disabled by default and can be enabled manually if nee
 
 **This project is not endorsed by, directly affiliated with, maintained, authorized, or sponsored by NextEnergy.**
 
-![NextEnergy Logo](images/nextenergy_battery/logo.png)
+[![NextEnergy Logo](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/logo.png)](https://www.nextenergy.nl)
+
 
 <img src="https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Battery Master Unit" width="50%"><img src="https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Uitbreiding.png" alt="NextEnergy Battery Slave Unit" width="50%">
 
