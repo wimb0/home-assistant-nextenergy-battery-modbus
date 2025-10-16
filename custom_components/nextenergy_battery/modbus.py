@@ -32,7 +32,9 @@ class NextEnergyModbusClient:
 
     def _read_sensor_value(self, sensor_key):
         """Read a single sensor value from the Modbus device."""
-        name, address, scale, unit, device_class, state_class, is_string, count = SENSORS[sensor_key]
+        # --- DIT IS DE WIJZIGING ---
+        # We negeren de laatste waarde (het icoon) met een underscore _.
+        name, address, scale, unit, device_class, state_class, is_string, count, _ = SENSORS[sensor_key]
 
         _LOGGER.debug(f"Reading sensor {name} from address {address} with count {count}")
         
