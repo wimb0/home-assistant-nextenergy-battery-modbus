@@ -1,6 +1,5 @@
 """Test NextEnergy Battery sensor entities."""
 from datetime import timedelta
-from unittest.mock import patch
 
 from homeassistant.const import STATE_UNAVAILABLE
 from homeassistant.core import HomeAssistant
