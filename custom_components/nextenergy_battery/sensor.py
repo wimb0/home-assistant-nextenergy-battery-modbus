@@ -27,7 +27,7 @@ async def async_setup_entry(
     prefix = coordinator.prefix
 
     entity_descriptions = []
-    for key, (name, _, _, unit, device_class, state_class, _, _) in SENSORS.items():
+    for key, (name, _, _, unit, device_class, state_class, _, _, icon) in SENSORS.items():
         enabled_by_default = key not in DISABLED_BY_DEFAULT
         entity_descriptions.append(
             SensorEntityDescription(
@@ -37,6 +37,7 @@ async def async_setup_entry(
                 device_class=device_class,
                 state_class=state_class,
                 entity_registry_enabled_default=enabled_by_default,
+                icon=icon,  # <-- Statisch icoon hier toegevoegd
             )
         )
 
@@ -47,6 +48,7 @@ async def async_setup_entry(
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
+            icon="mdi:battery-plus-outline",
         ),
         SensorEntityDescription(
             key=f"{prefix}_battery_discharging",
@@ -54,6 +56,7 @@ async def async_setup_entry(
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
+            icon="mdi:battery-minus-outline",
         ),
         SensorEntityDescription(
             key=f"{prefix}_grid_import",
@@ -61,6 +64,7 @@ async def async_setup_entry(
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
+            icon="mdi:transmission-tower-import",
         ),
         SensorEntityDescription(
             key=f"{prefix}_grid_export",
@@ -68,6 +72,7 @@ async def async_setup_entry(
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
+            icon="mdi:transmission-tower-export",
         ),
     ])
 
@@ -104,3 +109,30 @@ class NextEnergySensor(CoordinatorEntity[NextEnergyDataCoordinator], SensorEntit
         """Return the state of the sensor."""
         unprefixed_key = self.entity_description.key.replace(f"{self.coordinator.prefix}_", "", 1)
         return self.coordinator.data.get(unprefixed_key)
+
+    @property
+    def icon(self) -> str | None:
+        """Return the icon of the sensor."""
+        unprefixed_key = self.entity_description.key.replace(f"{self.coordinator.prefix}_", "", 1)
+        
+        # --- VOORBEELD VAN DYNAMISCHE ICONEN ---
+        if unprefixed_key in ["system_soc", "bms_soc"]:
+            value = self.coordinator.data.get(unprefixed_key)
+            if value is None:
+                return "mdi:battery-unknown"
+            
+            # Rond de waarde af naar het dichtstbijzijnde tiental
+            rounded_value = int(round(value / 10)) * 10
+            
+            if rounded_value == 100:
+                # Als de batterij aan het opladen is, toon een oplaadicoon
+                if self.coordinator.data.get("battery_power", 0) > 0:
+                    return "mdi:battery-charging-100"
+                return "mdi:battery"
+            if rounded_value == 0:
+                 return "mdi:battery-outline"
+
+            return f"mdi:battery-{rounded_value}"
+            
+        # Voor alle andere sensoren, gebruik het statische icoon
+        return self.entity_description.icon
