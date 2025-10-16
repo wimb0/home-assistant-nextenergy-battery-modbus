@@ -7,7 +7,8 @@
 
 # Home Assistant NextEnergy Battery Modbus Integration
 
-This is a custom integration for Home Assistant to monitor NextEnergy batteries via Modbus TCP.
+This is a custom integration for Home Assistant to monitor the [NextEnergy Plug-in battery](https://www.nextenergy.nl/smart-home/plug-in-batterij) via Modbus TCP.
+The battery has Modbus TCP port 502 open on the WiFi and LAN interface.
 
 The battery is a Fox ESS MQ2200-M-AC and the expansion batteries are Fox ESS MQ2200-M-S.
 
