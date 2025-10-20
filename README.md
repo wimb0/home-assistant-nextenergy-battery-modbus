@@ -27,13 +27,27 @@ This integration has been tested and is known to work with the following firmwar
 
 ## Installation
 
-1.  **HACS (Recommended):**
-    * Go to HACS > Integrations > Click the three dots (top right) > **Custom repositories**.
-    * Enter the repository URL: `https://github.com/wimb0/home-assistant-nextenergy-battery-modbus`.
-    * Select **Integration** as the category and click **ADD**.
-    * The "NextEnergy Battery" integration will now be available to install from the HACS Integrations page.
-2.  **Manual:** Copy the `custom_components/nextenergy_battery` directory to your Home Assistant `custom_components` directory.
-3.  Restart Home Assistant.
+This integration is available in the Home Assistant Community Store [HACS][hacs].
+
+Use this link to directly go to the repository in HACS
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=wimb0&repository=home-assistant-nextenergy-battery-modbus)
+
+_or_
+
+1.  **Install HACS:** If you don't have HACS installed, follow the [installation instructions](https://hacs.xyz/docs/setup/download).
+2.  **Add Integration:**
+    * Open HACS in Home Assistant.
+    * Go to "Integrations".
+    * Click the three dots in the top right and select "Custom repositories".
+    * Add the repository URL: `https://github.com/wimb0/home-assistant-nextenergy-battery-modbus` and select the "Integration" category.
+    * Search for "NextEnergy Battery" and click "Install".
+3.  **Restart Home Assistant:** After installation, you must restart Home Assistant.
+
+_or_
+
+1.  **Manual:** Copy the `custom_components/nextenergy_battery` directory to your Home Assistant `custom_components` directory.
+2.  Restart Home Assistant.
 
 ## Configuration
 
