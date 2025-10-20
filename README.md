@@ -17,15 +17,15 @@ Currently implements Fox ESS Modbus registers from [`FoxESS Modbus Protocol--202
 
 <img src="https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Battery Master Unit" width="50%">
 
-## Compatibility
+## Compatibility ⚠️
 
 This integration has been tested and is known to work with the following firmware versions:
 - **Inverter (INV):** `2.010`
 - **Battery Management System (BMS):** `1.007`
 
-⚠️ **Please note:** This integration is confirmed **not** to be working with BMS version `1.000`, as modbus port 502 is not enabled.
+**Please note:** This integration is confirmed **not** to be working with BMS version `1.000`, as modbus port 502 is not enabled.
 
-## Installation
+## Installation ⚙️
 
 This integration is available in the Home Assistant Community Store [HACS][hacs].
 
@@ -49,7 +49,7 @@ _or_
 1.  **Manual:** Copy the `custom_components/nextenergy_battery` directory to your Home Assistant `custom_components` directory.
 2.  Restart Home Assistant.
 
-## Configuration
+## Configuration 🛠️
 
 1.  Go to **Settings** > **Devices & Services**.
 2.  Click **+ Add Integration** and search for "NextEnergy Battery".
@@ -58,7 +58,7 @@ _or_
 
 After installation, you can change the Host, Port, Slave ID and Polling Interval by clicking **Configure** on the integration card.
 
-## Sensors
+## Sensors 🧩
 
 The integration creates a device with a number of sensors to monitor your battery system. The entity IDs of the sensors will be prefixed with the value you provided during configuration (e.g. `sensor.nextenergy_system_soc`). Many non-critical sensors are disabled by default but can be enabled from the device page.
 
@@ -106,6 +106,33 @@ The following sensors are disabled by default and can be enabled manually if nee
 - **Capacity Info:** Full Charge Capacity (FCC) and Design Energy.
 - **System States:** Raw status for System Power, Battery Power, and Network.
 - **Total Load Power:** Cumulative lifetime energy consumed by the load.
+
+## Troubleshooting 🐛
+
+If you encounter any issues with the integration, there are two main ways to gather more information to help diagnose the problem.
+
+### Enabling Debug Logging
+
+For detailed logs, you can enable debug logging for this integration by adding the following to your `configuration.yaml` file:
+
+```yaml
+logger:
+  default: info
+  logs:
+    custom_components.nextenery_battery: debug
+```
+
+After adding this, restart Home Assistant. The logs can be found in **Settings > System > Logs**.
+
+### Downloading Diagnostics
+
+You can download diagnostic data directly from Home Assistant. This data provides information about the inverter and the integration's status.
+
+1.  Navigate to **Settings > Devices & Services**.
+2.  Find the **NextEnergy Battery* integration and click on the device.
+3.  Click the three-dot menu on the device card and select **Download diagnostics**.
+
+This will download a text file with diagnostic information that you can share when creating a bug report.
 
 ---
 
