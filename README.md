@@ -17,6 +17,14 @@ Currently implements Fox ESS Modbus registers from [`FoxESS Modbus Protocol--202
 
 <img src="https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Battery Master Unit" width="50%">
 
+## Compatibility
+
+This integration has been tested and is known to work with the following firmware versions:
+- **Inverter (INV):** `2.010`
+- **Battery Management System (BMS):** `1.007`
+
+⚠️ **Please note:** This integration is confirmed **not** to be working with BMS version `1.000`, as modbus port 502 is not enabled.
+
 ## Installation
 
 1.  **HACS (Recommended):**
