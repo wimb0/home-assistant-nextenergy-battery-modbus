@@ -15,7 +15,7 @@ The battery is a Fox ESS MQ2200-M-AC and the expansion batteries are Fox ESS MQ2
 
 Currently implements Fox ESS Modbus registers from [`FoxESS Modbus Protocol--20250115 (V1.05.03.00)(1).pdf`](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/FoxESS%20Modbus%20Protocol--20250115%20(V1.05.03.00)(1).pdf).
 
-<img src="https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Battery Master Unit" width="50%">
+![NextEnergy Battery Master Unit](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Master-small.png)
 
 ## Compatibility ⚠️
 
@@ -142,8 +142,8 @@ This will download a text file with diagnostic information that you can share wh
 
 [![NextEnergy Logo](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/logo.png)](https://www.nextenergy.nl)
 
-
-<img src="https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Master.png" alt="NextEnergy Battery Master Unit" width="50%"><img src="https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Uitbreiding.png" alt="NextEnergy Battery Slave Unit" width="50%">
+![NextEnergy Battery Master Unit](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Master-small.png)
+![NextEnergy Battery Slave Unit](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Uitbreiding-small.png)
 
 [hacs-url]: https://github.com/hacs/integration
 [hacs-badge]: https://img.shields.io/badge/hacs-default-orange.svg?style=for-the-badge
