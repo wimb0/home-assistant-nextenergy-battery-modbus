@@ -1,6 +1,6 @@
 [![release][release-badge]][release-url]
 ![downloads][downloads-badge]
-
+![active][active-badge]
 [![hacs][hacs-badge]][hacs-url]
 ![license][lic-badge]
 [![buymecoffeebadge]][buymecoffeeurl]
