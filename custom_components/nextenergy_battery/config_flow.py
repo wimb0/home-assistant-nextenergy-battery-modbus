@@ -23,7 +23,7 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     @callback
     def async_get_options_flow(config_entry):
         """Get the options flow for this handler."""
-        return NextEnergyBatteryOptionsFlow(config_entry)
+        return NextEnergyBatteryOptionsFlow()
 
     async def async_step_user(self, user_input=None):
         """Handle the initial setup step."""
@@ -65,10 +65,6 @@ class NextEnergyBatteryConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
     """Handle an options flow for changing settings."""
 
-    def __init__(self, config_entry: config_entries.ConfigEntry):
-        """Initialize the options flow."""
-        self.config_entry = config_entry
-
     async def async_step_init(self, user_input=None):
         """Manage the options."""
         if user_input is not None:
@@ -77,24 +73,21 @@ class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
                 CONF_PORT: user_input[CONF_PORT],
                 CONF_SLAVE_ID: user_input[CONF_SLAVE_ID],
             }
-            
             new_options = {
                 CONF_POLLING_INTERVAL: user_input[CONF_POLLING_INTERVAL],
+                # This correctly uses the built-in self.config_entry property
                 CONF_PREFIX: self.config_entry.options.get(CONF_PREFIX),
             }
-            
             new_title = f"{MANUFACTURER} ({user_input[CONF_HOST]})"
+            
             self.hass.config_entries.async_update_entry(
-                self.config_entry,
-                title=new_title,
-                data=new_data,
-                options=new_options
+                self.config_entry, title=new_title, data=new_data, options=new_options
             )
             return self.async_abort(reason="reconfigure_successful")
 
         data = self.config_entry.data
         options = self.config_entry.options
-        
+
         options_schema = vol.Schema({
             vol.Required(CONF_HOST, default=data.get(CONF_HOST)): str,
             vol.Required(CONF_PORT, default=data.get(CONF_PORT, 502)): int,
@@ -104,7 +97,7 @@ class NextEnergyBatteryOptionsFlow(config_entries.OptionsFlow):
                 default=options.get(CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL)
             ): int,
         })
-        
+
         return self.async_show_form(
             step_id="init",
             data_schema=options_schema
