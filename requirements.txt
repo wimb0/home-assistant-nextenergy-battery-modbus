@@ -2,7 +2,7 @@ pymodbus>=3.10
 colorlog==6.10.1
 homeassistant>=2025.1.0
 pip>=21.3.1
-ruff==0.15.4
+ruff==0.15.6
 pytest
 pytest-homeassistant-custom-component
 pytest-asyncio
