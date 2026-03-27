@@ -20,8 +20,8 @@ Currently implements Fox ESS Modbus registers from [`FoxESS Modbus Protocol--202
 ## Compatibility ⚠️
 
 This integration has been tested and is known to work with the following firmware versions:
-- **Inverter (INV):** `2.010`
-- **Battery Management System (BMS):** `1.007`
+- **Inverter (INV):** `2.010` and `2.111`
+- **Battery Management System (BMS):** `1.007` and `1.010`
 
 **Please note:** This integration is confirmed **not** to be working with BMS version `1.000`, as modbus port 502 is not enabled.
 
@@ -51,10 +51,11 @@ _or_
 
 ## Configuration 🛠️
 
-1.  Go to **Settings** > **Devices & Services**.
-2.  Click **+ Add Integration** and search for "NextEnergy Battery".
-3.  Enter the Host IP, Port, and Modbus Slave ID of your battery.
-4.  (Optional) Enter a prefix for the sensor names. The default is `nextenergy`.
+1.  Find the IP address of the NextEnergy Battery in your router or dhcp server: The hostname name should be `INVERTER_60V180105123456` (where 60V180105123456 is the serial number)
+2.  Go to **Settings** > **Devices & Services**.
+3.  Click **+ Add Integration** and search for "NextEnergy Battery".
+4.  Enter the Host IP, Port, and Modbus Slave ID of your battery.
+5.  (Optional) Enter a prefix for the sensor names. The default is `nextenergy`.
 
 After installation, you can change the Host, Port, Slave ID and Polling Interval by clicking **Configure** on the integration card.
 
