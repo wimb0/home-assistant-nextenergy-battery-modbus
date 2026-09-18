@@ -1,6 +1,5 @@
 """Test the NextEnergy battery device model without hardware."""
 import pytest
-
 from modbus_connection import IllegalDataAddressError, ModbusTimeoutError
 
 from custom_components.nextenergy_battery.device import (
