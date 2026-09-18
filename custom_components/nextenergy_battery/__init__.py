@@ -7,6 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 import homeassistant.helpers.config_validation as cv
+from modbus_connection import ModbusError
 
 from .const import (
     DOMAIN,
@@ -16,9 +17,9 @@ from .const import (
     CONF_SLAVE_ID,
     CONF_POLLING_INTERVAL,
     DEFAULT_POLLING_INTERVAL,
-    STATIC_SENSORS,
+    SETTINGS_POLLING_INTERVAL,
 )
-from .modbus import NextEnergyModbusClient
+from .device import NextEnergyBattery, create_connection
 from .coordinator import NextEnergyDataCoordinator
 
 _LOGGER = logging.getLogger(__name__)
@@ -42,34 +43,68 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     prefix = entry.options.get(CONF_PREFIX, DEFAULT_PREFIX) or DEFAULT_PREFIX
     polling_interval = entry.options.get(CONF_POLLING_INTERVAL, DEFAULT_POLLING_INTERVAL)
 
-    client = NextEnergyModbusClient(host, port, slave_id)
-    coordinator = NextEnergyDataCoordinator(hass, client, polling_interval, prefix)
+    connection = create_connection(host, port)
+    device = NextEnergyBattery(connection.for_unit(slave_id))
+    # Live measurements poll fast; the rarely-changing settings poll slow.
+    # Both share one connection, which serializes their requests.
+    readings = NextEnergyDataCoordinator(
+        hass,
+        entry,
+        device,
+        connection,
+        prefix,
+        polling_interval,
+        poll=device.async_update_readings,
+        count_timeouts=True,
+    )
+    settings = NextEnergyDataCoordinator(
+        hass,
+        entry,
+        device,
+        connection,
+        prefix,
+        SETTINGS_POLLING_INTERVAL,
+        poll=device.async_update_settings,
+    )
+    entry.async_on_unload(readings.async_close)
 
     try:
-        static_data = await hass.async_add_executor_job(
-            client.read_sensors, STATIC_SENSORS.keys()
-        )
-        if not static_data:
-            _LOGGER.error("Could not read static data from battery, integration will not start.")
-            raise ConfigEntryNotReady("Failed to read static sensor data")
-        
-        coordinator.static_data = static_data
-        _LOGGER.debug(f"Successfully fetched static data: {static_data}")
+        await readings.async_setup()
+    except ModbusError as err:
+        raise ConfigEntryNotReady(f"Could not reach the battery: {err}") from err
 
-    except Exception as e:
-        _LOGGER.error("Error fetching static data: %s", e)
-        raise ConfigEntryNotReady(f"Failed to fetch static data from battery: {e}") from e
+    await readings.async_config_entry_first_refresh()
+    await settings.async_config_entry_first_refresh()
 
+    _async_migrate_to_serial_identity(hass, entry, device)
 
-    await coordinator.async_config_entry_first_refresh()
-
-    hass.data[DOMAIN][entry.entry_id] = coordinator
+    hass.data[DOMAIN][entry.entry_id] = (readings, settings)
 
     entry.async_on_unload(entry.add_update_listener(update_listener))
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
+
+
+def _async_migrate_to_serial_identity(
+    hass: HomeAssistant, entry: ConfigEntry, device: NextEnergyBattery
+) -> None:
+    """Key this entry on the battery's serial number instead of its host.
+
+    Entries created before serial probing used the host as unique id, so
+    moving the battery to a new address looked like a new device. Entity
+    unique ids and the device identifiers are entry-id based and therefore
+    unaffected; only the entry's own unique id moves.
+    """
+    serial = device.identity.serial_number or None
+    if serial is not None and entry.unique_id != serial:
+        _LOGGER.info(
+            "Migrating NextEnergy Battery entry from host identity %s to serial %s",
+            entry.unique_id,
+            serial,
+        )
+        hass.config_entries.async_update_entry(entry, unique_id=serial)
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:

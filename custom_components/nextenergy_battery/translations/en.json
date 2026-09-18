@@ -30,7 +30,8 @@
                     "host": "Host",
                     "port": "Port",
                     "slave_id": "Slave ID",
-                    "polling_interval": "Polling Interval (seconds)"
+                    "polling_interval": "Polling Interval (seconds)",
+                    "prefix": "Prefix for sensor names"
                 }
             }
         },

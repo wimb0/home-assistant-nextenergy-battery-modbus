@@ -4,6 +4,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.const import (
+    UnitOfApparentPower,
     UnitOfEnergy,
     UnitOfPower,
     UnitOfTemperature,
@@ -18,6 +19,7 @@ MANUFACTURER = "NextEnergy"
 PLATFORMS = ["sensor"]
 DEFAULT_POLLING_INTERVAL = 30
 CONF_POLLING_INTERVAL = "polling_interval"
+SETTINGS_POLLING_INTERVAL = 300
 CONF_PREFIX = "prefix"
 DEFAULT_PREFIX = "nextenergy"
 CONF_SLAVE_ID = "slave_id"
@@ -42,7 +44,7 @@ STATUS_1_MESSAGES = {
 }
 WORK_MODE_MESSAGES = {
     1: "Self-Use", 2: "Feed-in Priority", 3: "Back-Up",
-    4: "Peak Shaving", 6: "Force Charge", 7: "Force Discharge",
+    4: "Peak Shaving", 5: "Power Station", 6: "Force Charge", 7: "Force Discharge",
 }
 SYSTEM_POWER_STATE_MESSAGES = {0: "Turn OFF", 1: "Turn ON"}
 NETWORK_STATUS_MESSAGES = {0: "Not Connected", 1: "Disconnection", 2: "Connection"}
@@ -67,8 +69,13 @@ STATIC_SENSORS = {
     "bms_slave_4_sn": ("BMS Slave 4 SN", 37145, 1, None, None, None, True, 16, "mdi:numeric"),
     "bms_slave_5_sn": ("BMS Slave 5 SN", 37161, 1, None, None, None, True, 16, "mdi:numeric"),
     "bms_design_energy": ("BMS Design Energy", 37635, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, None, False, 1, None),
+    "battery_flag": ("Battery Flag", 37636, 1, None, None, None, False, 1, "mdi:flag-outline"),
+    "bms_master_type": ("BMS Master Type", 37004, 1, None, None, None, False, 1, "mdi:information-outline"),
     "rated_power": ("Rated Power (Pn)", 39053, 0.001, UnitOfPower.KILO_WATT, SensorDeviceClass.POWER, None, False, 2, None),
     "max_active_power": ("Max Active Power (Pmax)", 39055, 0.001, UnitOfPower.KILO_WATT, SensorDeviceClass.POWER, None, False, 2, None),
+    "max_apparent_power": ("Max Apparent Power (Smax)", 39057, 0.001, UnitOfApparentPower.KILO_VOLT_AMPERE, SensorDeviceClass.APPARENT_POWER, None, False, 2, None),
+    "max_reactive_power_fed": ("Max Reactive Power Fed", 39059, 0.001, UnitOfReactivePower.KILO_VOLT_AMPERE_REACTIVE, SensorDeviceClass.REACTIVE_POWER, None, False, 2, None),
+    "max_reactive_power_absorbed": ("Max Reactive Power Absorbed", 39061, 0.001, UnitOfReactivePower.KILO_VOLT_AMPERE_REACTIVE, SensorDeviceClass.REACTIVE_POWER, None, False, 2, None),
 }
 
 DYNAMIC_SENSORS = {
@@ -82,6 +89,12 @@ DYNAMIC_SENSORS = {
     "bms_max_cell_voltage": ("BMS Max Cell Voltage", 37619, 1, UnitOfElectricPotential.MILLIVOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 1, "mdi:battery-plus-variant"),
     "bms_min_cell_voltage": ("BMS Min Cell Voltage", 37620, 1, UnitOfElectricPotential.MILLIVOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT, False, 1, "mdi:battery-minus-variant"),
     "bms_soh": ("BMS SOH", 37624, 1, "%", None, SensorStateClass.MEASUREMENT, False, 1, "mdi:battery-heart-variant"),
+    "bms_fault_1": ("BMS Fault 1", 37626, 1, None, None, None, False, 1, "mdi:alert-outline"),
+    "bms_fault_2": ("BMS Fault 2", 37627, 1, None, None, None, False, 1, "mdi:alert-outline"),
+    "bms_fault_3": ("BMS Fault 3", 37628, 1, None, None, None, False, 1, "mdi:alert-outline"),
+    "bms_fault_4": ("BMS Fault 4", 37629, 1, None, None, None, False, 1, "mdi:alert-outline"),
+    "bms_fault_5": ("BMS Fault 5", 37630, 1, None, None, None, False, 1, "mdi:alert-outline"),
+    "bms_fault_6": ("BMS Fault 6", 37631, 1, None, None, None, False, 1, "mdi:alert-outline"),
     "bms_remain_energy": ("BMS Remain Energy", 37632, 0.01, UnitOfEnergy.KILO_WATT_HOUR, None, SensorStateClass.MEASUREMENT, False, 1, None),
     "bms_fcc_capacity": ("BMS FCC Capacity", 37633, 0.1, f"{UnitOfElectricCurrent.AMPERE}h", None, SensorStateClass.MEASUREMENT, False, 1, "mdi:battery-plus-variant"),
     "meter_connection_status": ("Meter Connection Status", 38801, 1, None, None, None, False, 1, "mdi:lan-connect"),
@@ -118,6 +131,10 @@ DYNAMIC_SENSORS = {
     "grid_export_today": ("Grid Export Today", 39615, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
     "grid_import_total": ("Grid Import Total", 39617, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
     "grid_import_today": ("Grid Import Today", 39619, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
+    "output_energy_total": ("Output Energy Total", 39621, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
+    "output_energy_today": ("Output Energy Today", 39623, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
+    "input_energy_total": ("Input Energy Total", 39625, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
+    "input_energy_today": ("Input Energy Today", 39627, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
     "total_load_power": ("Total Load Power", 39629, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
     "total_load_power_today": ("Total Load Power Today", 39631, 0.01, UnitOfEnergy.KILO_WATT_HOUR, SensorDeviceClass.ENERGY, SensorStateClass.TOTAL_INCREASING, False, 2, None),
     "min_soc": ("Minimum SoC", 46609, 1, "%", SensorDeviceClass.BATTERY, SensorStateClass.MEASUREMENT, False, 1, "mdi:battery-arrow-down-outline"),
@@ -139,7 +156,11 @@ DISABLED_BY_DEFAULT = [
     "t_phase_voltage", "r_phase_current", "s_phase_current", "t_phase_current",
     "grid_r_voltage", "grid_s_voltage", "grid_t_voltage", "rated_power",
     "max_active_power", "eps_power", "reactive_power", "bms_design_energy",
-    "bms_max_temp", "bms_min_temp", "bms_max_cell_voltage", "bms_min_cell_voltage",
+    "bms_max_temp", "bms_min_temp",     "bms_max_cell_voltage", "bms_min_cell_voltage",
     "total_load_power", "bms_fcc_capacity", "system_power_state", "network_status",
     "total_load_power_today", "min_soc", "max_soc", "min_soc_ongrid",
+    "bms_master_type", "battery_flag",
+    "max_apparent_power", "max_reactive_power_fed", "max_reactive_power_absorbed",
+    "bms_fault_1", "bms_fault_2", "bms_fault_3",
+    "bms_fault_4", "bms_fault_5", "bms_fault_6",
 ]
