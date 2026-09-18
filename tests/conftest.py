@@ -1,43 +1,45 @@
 """Global fixtures for NextEnergy Battery tests."""
-import pytest
 from unittest.mock import patch
 
-from .const import MOCK_STATIC_DATA, MOCK_DYNAMIC_DATA_DISCHARGE
+import pytest
+
+from .const import MOCK_SERIAL, seed_discharge
+
 
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(enable_custom_integrations):
     """Auto enable custom integrations."""
     yield
 
+
 @pytest.fixture(name="skip_notifications", autouse=True)
 def skip_notifications_fixture():
     """Skip notification calls."""
     yield
 
-@pytest.fixture(name="bypass_get_data")
-def bypass_get_data_fixture():
-    """Skip calls to the API and return mock data."""
-    def mock_read_sensors(sensor_keys):
-        if "model_name" in sensor_keys:
-            return MOCK_STATIC_DATA
-        return MOCK_DYNAMIC_DATA_DISCHARGE
 
+@pytest.fixture(name="mock_connection")
+def mock_connection_fixture(mock_modbus_connection):
+    """Patch the TCP connection factory onto the in-memory mock backend."""
     with patch(
-        "custom_components.nextenergy_battery.modbus.NextEnergyModbusClient.read_sensors",
-        side_effect=mock_read_sensors,
-    ) as mock_api:
-        yield mock_api
+        "custom_components.nextenergy_battery.create_connection",
+        return_value=mock_modbus_connection,
+    ):
+        yield mock_modbus_connection
 
-@pytest.fixture(name="bypass_get_data_empty")
-def bypass_get_data_empty_fixture():
-    """Simulate a successful static data read, followed by failed dynamic data reads."""
-    def mock_read_sensors(sensor_keys):
-        if "model_name" in sensor_keys:
-            return MOCK_STATIC_DATA
-        return {}
 
+@pytest.fixture(name="mock_device")
+def mock_device_fixture(mock_connection, mock_modbus_unit):
+    """Patch the connection and seed a discharging battery."""
+    seed_discharge(mock_modbus_unit)
+    yield mock_connection
+
+
+@pytest.fixture(name="mock_probe")
+def mock_probe_fixture():
+    """Patch the config-flow probe to report a fixed serial."""
     with patch(
-        "custom_components.nextenergy_battery.modbus.NextEnergyModbusClient.read_sensors",
-        side_effect=mock_read_sensors,
-    ) as mock_api:
-        yield mock_api
+        "custom_components.nextenergy_battery.config_flow.async_probe",
+        return_value=MOCK_SERIAL,
+    ) as probe:
+        yield probe

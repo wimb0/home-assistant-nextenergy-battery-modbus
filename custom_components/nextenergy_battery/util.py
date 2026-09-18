@@ -1,7 +1,7 @@
 """Utility functions for the NextEnergy Battery integration."""
-from typing import Dict
 
-def parse_bitfield_messages(value: int | None, message_map: Dict[int, str]) -> str:
+
+def parse_bitfield_messages(value: int | None, message_map: dict[int, str]) -> str:
     """Parse a bitfield value and return a comma-separated string of messages."""
     if value is None or value == 0:
         return "OK"

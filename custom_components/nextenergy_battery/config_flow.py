@@ -9,12 +9,12 @@ from homeassistant.helpers import entity_registry as er
 from modbus_connection import ModbusError
 
 from .const import (
-    DOMAIN,
-    DEFAULT_POLLING_INTERVAL,
     CONF_POLLING_INTERVAL,
     CONF_PREFIX,
-    DEFAULT_PREFIX,
     CONF_SLAVE_ID,
+    DEFAULT_POLLING_INTERVAL,
+    DEFAULT_PREFIX,
+    DOMAIN,
     MANUFACTURER,
 )
 from .device import NextEnergyBattery, create_connection

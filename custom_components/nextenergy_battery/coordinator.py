@@ -132,7 +132,7 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator[None]):
             errors = list(report.failed.values())
             raise UpdateFailed(
                 f"Failed to fetch data: {errors[0]}"
-            ) from ExceptionGroup("no component answered", errors)
+            ) from errors[0]
 
         for name in sorted(report.failed.keys() - was_failing):
             _LOGGER.warning("Failed to fetch %s: %s", name, report.failed[name])
@@ -216,7 +216,7 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator[None]):
         power = self.device.powerflow.battery_power
         if power is None:
             return None
-        return power if power > 0 else 0
+        return max(0, power)
 
     @property
     def battery_discharging(self) -> float | None:
@@ -232,7 +232,7 @@ class NextEnergyDataCoordinator(DataUpdateCoordinator[None]):
         power = self.device.powerflow.grid_power_meter
         if power is None:
             return None
-        return power if power > 0 else 0
+        return max(0, power)
 
     @property
     def grid_export(self) -> float | None:

@@ -12,12 +12,12 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import UnitOfPower
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
-from homeassistant.const import UnitOfPower
 
-from .const import DOMAIN, SENSORS, DISABLED_BY_DEFAULT
+from .const import DISABLED_BY_DEFAULT, DOMAIN, SENSORS
 from .coordinator import NextEnergyDataCoordinator
 
 
@@ -400,7 +400,7 @@ class NextEnergySensor(
             if value is None:
                 return "mdi:battery-unknown"
 
-            rounded_value = int(round(value / 10)) * 10
+            rounded_value = round(value / 10) * 10
 
             if rounded_value == 100:
                 if (self.coordinator.device.powerflow.battery_power or 0) > 0:
