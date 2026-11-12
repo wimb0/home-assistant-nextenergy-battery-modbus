@@ -11,9 +11,9 @@ This is a custom integration for Home Assistant to monitor the [NextEnergy Plug-
 
 The battery has Modbus TCP (port 502) enabled on the WiFi and LAN interface, and is used by this integration to communicate with the battery.
 
-The battery is a Fox ESS MQ2200-M-AC and the expansion batteries are Fox ESS MQ2200-M-S.
+The battery is a FoxESS MQ2200-M-AC and the expansion batteries are FoxESS MQ2200-M-S.
 
-Currently implements Fox ESS Modbus registers from [`FoxESS Modbus Protocol--20250115 (V1.05.03.00)(1).pdf`](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/FoxESS%20Modbus%20Protocol--20250115%20(V1.05.03.00)(1).pdf).
+Currently implements FoxESS Modbus registers from [`FoxESS Modbus Protocol--20250115 (V1.05.03.00)(1).pdf`](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/FoxESS%20Modbus%20Protocol--20250115%20(V1.05.03.00)(1).pdf).
 
 ![NextEnergy Battery Master Unit](https://github.com/wimb0/home-assistant-nextenergy-battery-modbus/blob/main/images/nextenergy_battery/Plug-in_Master-small.png)
 
